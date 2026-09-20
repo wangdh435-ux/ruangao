@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>系规备考专区 · 系统规划与管理师</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #f2f3f7; color: #222; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 30px 18px 50px; }
+header { background: linear-gradient(135deg, #1f4e79, #2e74b5); color: #fff; border-radius: 14px; padding: 24px 26px; margin-bottom: 20px; text-align: center; }
+header h1 { font-size: 22px; }
+header .sub { font-size: 14px; opacity: .9; margin-top: 6px; }
+a.tool { display: block; background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.07); padding: 18px 22px; margin-bottom: 14px; text-decoration: none; color: #222; border-left: 5px solid #1f4e79; }
+a.tool:hover { filter: brightness(1.03); transform: translateY(-1px); }
+a.tool b { font-size: 17px; color: #1f4e79; }
+a.tool p { font-size: 13.5px; color: #777; margin-top: 4px; line-height: 1.6; }
+a.tool.orange { border-left-color: #e6a23c; }
+a.tool.green { border-left-color: #35a854; }
+.foot { text-align: center; font-size: 12px; color: #aaa; margin-top: 22px; }
+</style>
+</head>
+<body>
+<div id="gate" style="position:fixed;inset:0;background:linear-gradient(135deg,#1f4e79,#2e74b5);z-index:99999;display:flex;align-items:center;justify-content:center;font-family:'PingFang SC','Microsoft YaHei',sans-serif">
+  <div style="background:#fff;border-radius:14px;padding:30px 34px;text-align:center;max-width:320px;box-shadow:0 8px 30px rgba(0,0,0,.25)">
+    <div style="font-size:30px">🔒</div>
+    <div style="font-size:18px;font-weight:600;margin:6px 0">系规备考专区</div>
+    <div style="font-size:13px;color:#888;margin-bottom:14px">请输入访问密码</div>
+    <input id="gatepw" type="password" placeholder="访问密码" autocomplete="off" style="border:1px solid #d5dae3;border-radius:8px;padding:10px;width:100%;font-size:15px;outline:none;box-sizing:border-box">
+    <button onclick="gateTry()" style="margin-top:12px;background:#1f4e79;color:#fff;border:0;border-radius:8px;padding:10px 30px;font-size:15px;cursor:pointer;width:100%">进 入</button>
+    <div id="gatemsg" style="color:#c0392b;font-size:13px;margin-top:8px"></div>
+  </div>
+</div>
+<script>
+var GATE_HASH = 2671889770;
+function gateHash(s){var h=5381;for(var i=0;i<s.length;i++){h=(h*33+s.charCodeAt(i))>>>0}return h}
+function gateTry(){if(gateHash(document.getElementById('gatepw').value)===GATE_HASH){document.getElementById('gate').remove();try{sessionStorage.setItem('gate_ok','1')}catch(e){}}else{document.getElementById('gatemsg').textContent='密码不对，再试一次'}}
+try{if(sessionStorage.getItem('gate_ok')==='1'){document.getElementById('gate').remove()}}catch(e){}
+document.getElementById('gatepw').addEventListener('keydown',function(e){if(e.key==='Enter')gateTry()});
+</script>
+
+<div class="wrap">
+  <header>
+    <h1>📚 系规备考专区</h1>
+    <div class="sub">系统规划与管理师 · 2026 年 10 月 24 日考试</div>
+  </header>
+  <a class="tool orange" href="morning.html">
+    <b>☀️ 每日晨测（电脑版推荐）</b>
+    <p>昨天打卡内容的 12 道填空 + 案例四种题型各 1 道（理论默写 / 找错改错 / 判断选择 / 计算），带溯源、解析与口诀，可重做换题。每天早上来一套。</p>
+  </a>
+  <a class="tool" href="app.html">
+    <b>📱 速记 APP（手机版推荐）</b>
+    <p>97 张速记卡：背诵模式翻卡、测试模式抽考、每日打卡记录进度。碎片时间刷这个。</p>
+  </a>
+  <a class="tool green" href="pocket.html">
+    <b>🃏 口袋速记（纯阅读版）</b>
+    <p>全部速记卡的快速翻阅版，不用打卡不测题，纯看。排队、通勤时随手翻。</p>
+  </a>
+  <div class="foot">距考试越近，越要每天坚持 · 加油 💪</div>
+</div>
+</body>
+</html>
