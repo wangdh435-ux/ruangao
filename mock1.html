@@ -214,13 +214,140 @@ const SCENARIOS = [
   t => `某集团与你公司签订信息技术服务合同，你作为系统规划与管理师派驻现场，负责${t}相关工作，服务期 3 年。`,
   t => `某单位为提升数字化水平，决定开展${t}工作。领导要求你牵头组织，确保规划科学、过程规范、成果可落地。`,
 ];
+// ---------- 计算题题库（依据《软考系规(第2版)计算公式汇总》） ----------
+const CALC_TYPES = [
+  // 0 云资源容量规划（2025 真题题型）
+  () => {
+    const fV = pick([4, 8, 16]), fN = pick([100, 150, 200, 250, 300, 400]), fU = pick([0.4, 0.5, 0.6]);
+    const aV = pick([8, 16, 32]), aN = pick([100, 150, 200, 250]), aU = pick([0.5, 0.6, 0.7]);
+    const growth = pick([1.5, 2, 2.5]), target = pick([0.7, 0.75, 0.8]);
+    const fUse = fV * fN * fU, aUse = aV * aN * aU;
+    const fNeed = fUse * growth / target, aNeed = aUse * growth / target;
+    return {
+      name: '云资源容量规划', hint: '写公式+过程+单位；实例数向上取整',
+      desc: `某企业前端服务器配置 ${fV}vCPU、${fN} 个虚拟机实例，当前 CPU 使用率 ${Math.round(fU * 100)}%；应用服务器配置 ${aV}vCPU、${aN} 个实例，当前 CPU 使用率 ${Math.round(aU * 100)}%。预计未来业务量增长到当前的 ${growth} 倍，资源与业务线性增长，不考虑单实例类型。请预测未来前端和应用服务的 CPU 需求总量和实例数量，使 CPU 利用率达到 ${Math.round(target * 100)}%。`,
+      src: '题型锚定 2025 真题 试题一【问题2】',
+      qs: [
+        { label: '前端 CPU 需求总量', unit: 'vCPU', exp: fNeed, tol: 0.51 },
+        { label: '前端实例数（向上取整）', unit: '台', exp: Math.ceil(fNeed / fV), tol: 0 },
+        { label: '应用 CPU 需求总量', unit: 'vCPU', exp: aNeed, tol: 0.51 },
+        { label: '应用实例数（向上取整）', unit: '台', exp: Math.ceil(aNeed / aV), tol: 0 },
+      ],
+      steps: [
+        `当前使用量 = vCPU × 实例数 × 当前使用率：前端 ${fV}×${fN}×${Math.round(fU * 100)}% = <b>${fUse}</b> vCPU；应用 ${aV}×${aN}×${Math.round(aU * 100)}% = <b>${aUse}</b> vCPU`,
+        `未来需求量 = 使用量 × 增长倍数 ÷ 目标利用率：前端 ${fUse}×${growth}÷${target} = <b>${fNeed.toFixed(1)}</b> vCPU；应用 ${aUse}×${growth}÷${target} = <b>${aNeed.toFixed(1)}</b> vCPU`,
+        `实例数 = 需求量 ÷ 单实例 vCPU（向上取整）：前端 ${fNeed.toFixed(1)}÷${fV} = <b>${Math.ceil(fNeed / fV)}</b> 台；应用 ${aNeed.toFixed(1)}÷${aV} = <b>${Math.ceil(aNeed / aV)}</b> 台`,
+      ],
+    };
+  },
+  // 1 可靠性指标 MTBF / MTTR / MTBSI / 可用性
+  () => {
+    const run = pick([720, 1440, 2160]), fails = pick([3, 4, 5, 6, 8]), down = pick([6, 9, 12, 15, 18, 24]);
+    const mtbf = run / fails, mttr = down / fails, mtbsi = mtbf + mttr, avail = mtbf / mtbsi * 100;
+    return {
+      name: '可靠性指标计算', hint: '写公式+过程+单位，可用性保留 1 位小数',
+      desc: `某系统上个统计周期内累计运行 ${run} 小时，期间共发生故障 ${fails} 次，故障修复总耗时 ${down} 小时。请计算该系统的平均无故障时间（MTBF）、平均故障修复时间（MTTR）、平均故障间隔（MTBSI）及可用性（可用性 = MTBF ÷ MTBSI × 100%）。`,
+      src: '公式汇总第 1-4 条：MTBF=运行时间÷故障次数；MTTR=故障耗时÷故障次数；MTBSI=MTBF+MTTR',
+      qs: [
+        { label: '平均无故障时间 MTBF', unit: '小时', exp: mtbf, tol: 0.51 },
+        { label: '平均故障修复时间 MTTR', unit: '小时', exp: mttr, tol: 0.51 },
+        { label: '平均故障间隔 MTBSI', unit: '小时', exp: mtbsi, tol: 0.6 },
+        { label: '可用性', unit: '%', exp: avail, tol: 0.15 },
+      ],
+      steps: [
+        `MTBF = 运行时间 ÷ 故障次数 = ${run}÷${fails} = <b>${Number(mtbf.toFixed(1))}</b> 小时（越长可靠性越高）`,
+        `MTTR = 故障耗时 ÷ 故障次数 = ${down}÷${fails} = <b>${Number(mttr.toFixed(1))}</b> 小时（越短易恢复性越好）`,
+        `MTBSI = MTBF + MTTR = ${Number(mtbf.toFixed(1))}+${Number(mttr.toFixed(1))} = <b>${Number(mtbsi.toFixed(1))}</b> 小时`,
+        `可用性 = MTBF ÷ MTBSI × 100% = ${Number(mtbf.toFixed(1))}÷${Number(mtbsi.toFixed(1))}×100% = <b>${avail.toFixed(1)}</b>%`,
+      ],
+    };
+  },
+  // 2 数据中心 PUE
+  () => {
+    const it = pick([40, 50, 60, 80, 100]), other = pick([20, 25, 30, 35, 40, 50]);
+    const total = it + other, pue = total / it;
+    return {
+      name: '数据中心 PUE 计算', hint: '写公式+过程，PUE 保留 2 位小数',
+      desc: `某云数据中心上月总用电量 ${total} 万度，其中 IT 设备用电 ${it} 万度，其余为制冷、配电等配套设施用电。请计算配套设施用电量、该数据中心的 PUE 值，以及设施用电占总用电的比例。`,
+      src: '公式汇总第 19 条：PUE = 数据中心总用电量 ÷ IT 设备用电量，越接近 1 绿色化程度越高',
+      qs: [
+        { label: '配套设施用电量', unit: '万度', exp: other, tol: 0 },
+        { label: 'PUE 值', unit: '', exp: pue, tol: 0.011 },
+        { label: '设施用电占比', unit: '%', exp: other / total * 100, tol: 0.15 },
+      ],
+      steps: [
+        `配套设施用电量 = 总用电 − IT 用电 = ${total}−${it} = <b>${other}</b> 万度`,
+        `PUE = 总用电量 ÷ IT 设备用电量 = ${total}÷${it} = <b>${pue.toFixed(2)}</b>`,
+        `设施用电占比 = ${other}÷${total}×100% = <b>${(other / total * 100).toFixed(1)}</b>%（PUE 越接近 1 越绿色节能）`,
+      ],
+    };
+  },
+  // 3 SLA 达成率 / 服务台接听率
+  () => {
+    const total = pick([800, 1000, 1200, 1500, 2000]);
+    const slaOk = Math.round(total * pick([0.9, 0.92, 0.95, 0.96]));
+    const calls = pick([3000, 4000, 5000]), answered = Math.round(calls * pick([0.9, 0.93, 0.95]));
+    return {
+      name: 'SLA 与服务台指标', hint: '写公式+过程，比率保留 1 位小数',
+      desc: `某运维团队本月共受理事件 ${total} 起，其中 ${slaOk} 起在 SLA 约定时限内解决；服务台共接到用户呼叫 ${calls} 次，实际响应接听 ${answered} 次。请计算本月 SLA 达成率与服务台接听率。`,
+      src: '公式汇总第 8、10 条：SLA达成率=达成事件数÷事件总数×100%；接听率=响应电话数÷呼叫总数×100%',
+      qs: [
+        { label: 'SLA 达成率', unit: '%', exp: slaOk / total * 100, tol: 0.11 },
+        { label: '服务台接听率', unit: '%', exp: answered / calls * 100, tol: 0.11 },
+      ],
+      steps: [
+        `SLA 达成率 = 达成事件数 ÷ 事件总数 × 100% = ${slaOk}÷${total}×100% = <b>${(slaOk / total * 100).toFixed(1)}</b>%`,
+        `接听率 = 响应电话数 ÷ 呼叫总数 × 100% = ${answered}÷${calls}×100% = <b>${(answered / calls * 100).toFixed(1)}</b>%`,
+      ],
+    };
+  },
+  // 4 投资收益：净产出 / 投资回报率 / 投入产出比
+  () => {
+    const k = pick([200, 300, 500, 800]);
+    const income = Math.round(k * pick([1.5, 1.8, 2, 2.5, 3]));
+    const cost = Math.round(income * pick([0.5, 0.6, 0.7]));
+    const profit = income - cost;
+    return {
+      name: '投资收益计算', hint: '写公式+过程+单位，比率保留 1 位小数',
+      desc: `某信息化项目投资总额 ${k} 万元，项目期内收入总额 ${income} 万元，开支 ${cost} 万元。请计算该项目净产出、投资回报率，以及投入产出比（按 1:N 形式，N 保留 1 位小数）。`,
+      src: '公式汇总第 5-7 条：净产出=收入−开支；投资回报率=利润÷投资总额×100%；投入产出比 R=K/IN=1:N',
+      qs: [
+        { label: '项目净产出', unit: '万元', exp: profit, tol: 0 },
+        { label: '投资回报率', unit: '%', exp: profit / k * 100, tol: 0.15 },
+        { label: '投入产出比 1:N 中的 N', unit: '', exp: income / k, tol: 0.06 },
+      ],
+      steps: [
+        `净产出 = 收入 − 开支 = ${income}−${cost} = <b>${profit}</b> 万元`,
+        `投资回报率 = 利润 ÷ 投资总额 × 100% = ${profit}÷${k}×100% = <b>${(profit / k * 100).toFixed(1)}</b>%`,
+        `投入产出比 = 1 : 收入÷投资 = 1 : ${income}÷${k} = 1:<b>${(income / k).toFixed(1)}</b>（N 越大效益越好）`,
+      ],
+    };
+  },
+  // 5 风险值与期望货币价值 EMV
+  () => {
+    const p1 = pick([0.1, 0.2, 0.3]), loss = pick([50, 80, 100, 120]);
+    const pA = pick([0.6, 0.7]), gainA = pick([100, 150, 200]);
+    const pB = pick([0.4, 0.5]), gainB = pick([180, 240, 300]);
+    const emvA = pA * gainA, emvB = pB * gainB;
+    return {
+      name: '风险值与期望货币价值 EMV', hint: '写公式+过程+单位',
+      desc: `某项目识别出一项风险：发生概率 ${Math.round(p1 * 100)}%，一旦发生将造成 ${loss} 万元损失。另有两种应对投资方案：甲方案成功概率 ${Math.round(pA * 100)}%、预期收益 ${gainA} 万元；乙方案成功概率 ${Math.round(pB * 100)}%、预期收益 ${gainB} 万元。请计算该风险的风险值，以及甲、乙两方案的期望货币价值（EMV）。`,
+      src: '公式汇总第 17、18 条：风险值=概率×影响；EMV=概率×收益',
+      qs: [
+        { label: '风险值', unit: '万元', exp: p1 * loss, tol: 0.01 },
+        { label: '甲方案 EMV', unit: '万元', exp: emvA, tol: 0.01 },
+        { label: '乙方案 EMV', unit: '万元', exp: emvB, tol: 0.01 },
+      ],
+      steps: [
+        `风险值 = 风险概率 × 风险影响 = ${p1}×${loss} = <b>${Number((p1 * loss).toFixed(1))}</b> 万元`,
+        `EMV（甲）= ${pA}×${gainA} = <b>${Number(emvA.toFixed(1))}</b> 万元；EMV（乙）= ${pB}×${gainB} = <b>${Number(emvB.toFixed(1))}</b> 万元`,
+        `决策结论：EMV 越大越优，应选<b>方案${emvA >= emvB ? '甲' : '乙'}</b>（${Number(Math.max(emvA, emvB).toFixed(1))} 万元 > ${Number(Math.min(emvA, emvB).toFixed(1))} 万元）`,
+      ],
+    };
+  },
+];
 function genCalc() {
-  const fV = pick([4, 8, 16]), fN = pick([100, 150, 200, 250, 300, 400]), fU = pick([0.4, 0.5, 0.6]);
-  const aV = pick([8, 16, 32]), aN = pick([100, 150, 200, 250]), aU = pick([0.5, 0.6, 0.7]);
-  const growth = pick([1.5, 2, 2.5]), target = pick([0.7, 0.75, 0.8]);
-  const fUse = fV * fN * fU, aUse = aV * aN * aU;
-  const fNeed = fUse * growth / target, aNeed = aUse * growth / target;
-  return { fV, fN, fU, aV, aN, aU, growth, target, fUse, aUse, fNeed, aNeed, fInst: Math.ceil(fNeed / fV), aInst: Math.ceil(aNeed / aV) };
+  return CALC_TYPES[(SETNO - 1) % CALC_TYPES.length]();   // 按套号固定轮换，保证各套题型不同
 }
 const normT = s => (s || '').replace(/[\s，。、；：:（）()·""'']/g, '');
 
@@ -359,11 +486,10 @@ function renderCases() {
     </div>
     <div class="card case-card">
       <b>试题三（25 分）· 计算 + 理论默写</b>
-      <div class="ct">（一）计算题<span class="small">（写公式+过程+单位；实例数向上取整。15 分）</span></div>
-      <div class="cbg"><b>题目：</b>某企业前端服务器配置 ${C.calc.fV}vCPU、${C.calc.fN} 个虚拟机实例，当前 CPU 使用率 ${Math.round(C.calc.fU * 100)}%；应用服务器配置 ${C.calc.aV}vCPU、${C.calc.aN} 个实例，当前 CPU 使用率 ${Math.round(C.calc.aU * 100)}%。预计未来业务量增长到当前的 ${C.calc.growth} 倍，资源与业务线性增长，不考虑单实例类型。请预测未来前端和应用服务的 CPU 需求总量和实例数量，使 CPU 利用率达到 ${Math.round(C.calc.target * 100)}%。<span class="small">（题型锚定 2025 真题 试题一【问题2】）</span></div>
+      <div class="ct">（一）计算题 · ${C.calc.name}<span class="small">（${C.calc.hint}。15 分）</span></div>
+      <div class="cbg"><b>题目：</b>${C.calc.desc}<span class="small">（${C.calc.src}）</span></div>
       <div style="margin:8px 0;font-size:14.5px;line-height:2.4">
-        前端 CPU 需求总量 <input class="blank" id="c3d0" autocomplete="off"> vCPU；前端实例数 <input class="blank" id="c3d1" autocomplete="off"> 台<br>
-        应用 CPU 需求总量 <input class="blank" id="c3d2" autocomplete="off"> vCPU；应用实例数 <input class="blank" id="c3d3" autocomplete="off"> 台
+        ${C.calc.qs.map((q, i) => `${q.label} <input class="blank" id="c3d${i}" autocomplete="off">${q.unit ? ' ' + q.unit : ''}`).join('<br>')}
       </div>
       <div class="ans" id="c3d-a"></div>
       <div class="ct">（二）理论默写<span class="small">（每点 1 分，共 10 分制）</span></div>
@@ -445,30 +571,22 @@ function gradeCases() {
   });
   R.push(['试题二·匹配', mg, C.match.items.length]);
   const cc = C.calc;
-  const ans = [
-    { id: 'c3d0', exp: cc.fNeed, unit: 'vCPU', label: '前端 CPU 需求总量', inst: false },
-    { id: 'c3d1', exp: cc.fInst, unit: '台', label: '前端实例数', inst: true },
-    { id: 'c3d2', exp: cc.aNeed, unit: 'vCPU', label: '应用 CPU 需求总量', inst: false },
-    { id: 'c3d3', exp: cc.aInst, unit: '台', label: '应用实例数', inst: true },
-  ];
   let cg = 0;
-  const detail = ans.map(an => {
-    const inp = document.getElementById(an.id);
+  const detail = cc.qs.map((an, i) => {
+    const inp = document.getElementById('c3d' + i);
     const u = parseFloat(inp.value);
-    const right = an.inst ? u === an.exp : (!isNaN(u) && Math.abs(u - an.exp) <= 0.51);
+    const right = !isNaN(u) && Math.abs(u - an.exp) <= an.tol + 1e-9;
     if (right) cg++;
     inp.classList.add(right ? 'ok' : 'bad');
-    return `<div class="row" style="color:${right ? '#1e7a38' : '#c0392b'}">${right ? '✓' : '✗'} ${an.label}：正确答案 <b>${an.inst ? an.exp : an.exp.toFixed(1)}</b> ${an.unit}</div>`;
+    return `<div class="row" style="color:${right ? '#1e7a38' : '#c0392b'}">${right ? '✓' : '✗'} ${an.label}：正确答案 <b>${Number(an.exp.toFixed(2))}</b> ${an.unit}</div>`;
   }).join('');
   const elD = document.getElementById('c3d-a');
   elD.style.display = 'block';
   elD.innerHTML = `
-    <div class="row"><span class="tag exp">第1步</span>当前使用量 = vCPU × 实例数 × 当前使用率：前端 ${cc.fV}×${cc.fN}×${Math.round(cc.fU * 100)}% = <b>${cc.fUse}</b> vCPU；应用 ${cc.aV}×${cc.aN}×${Math.round(cc.aU * 100)}% = <b>${cc.aUse}</b> vCPU</div>
-    <div class="row"><span class="tag exp">第2步</span>未来需求量 = 使用量 × 增长倍数 ÷ 目标利用率：前端 ${cc.fUse}×${cc.growth}÷${cc.target} = <b>${cc.fNeed.toFixed(1)}</b> vCPU；应用 ${cc.aUse}×${cc.growth}÷${cc.target} = <b>${cc.aNeed.toFixed(1)}</b> vCPU</div>
-    <div class="row"><span class="tag exp">第3步</span>实例数 = 需求量 ÷ 单实例 vCPU（向上取整）：前端 ${cc.fNeed.toFixed(1)}÷${cc.fV} = <b>${cc.fInst}</b> 台；应用 ${cc.aNeed.toFixed(1)}÷${cc.aV} = <b>${cc.aInst}</b> 台</div>
+    ${cc.steps.map((s, i) => `<div class="row"><span class="tag exp">第${i + 1}步</span>${s}</div>`).join('')}
     ${detail}
     <div class="row"><span class="tag src">评分参考</span>不写公式/计算过程会扣分；过程对结果错酌情扣分；结果务必带单位</div>`;
-  R.push(['试题三·计算', cg, 4]);
+  R.push(['试题三·计算', cg, cc.qs.length]);
   R.push(['试题三·默写', ...gradeMemxie('c3q', C.m3)]);
   const totalG = R.reduce((s, r) => s + r[1], 0), totalT = R.reduce((s, r) => s + r[2], 0);
   const pct = Math.round(totalG / totalT * 75);
