@@ -345,9 +345,103 @@ const CALC_TYPES = [
       ],
     };
   },
+  // 6 服务台运营指标：派单准确率 / 录单率 / 平均通话时间
+  () => {
+    const reqs = pick([500, 600, 800]);
+    const dispatchOk = Math.round(reqs * pick([0.85, 0.9, 0.92]));
+    const calls = pick([900, 1000, 1200]), logged = Math.round(calls * pick([0.9, 0.95]));
+    const talkMin = reqs * pick([3, 4, 5]);
+    return {
+      name: '服务台运营指标', hint: '写公式+过程，比率保留 1 位小数',
+      desc: `某服务台本月共受理事件与服务请求 ${reqs} 起，其中首次派单即得到解决的有 ${dispatchOk} 起；共接到用户呼叫 ${calls} 次，接收呼叫并完成记录的有 ${logged} 次；用户呼叫持续总时长 ${talkMin} 分钟。请计算派单准确率、录单率和平均通话时间。`,
+      src: '公式汇总第 11-13 条：派单准确率=首次派单解决数÷请求总数×100%；录单率=记录数÷呼叫总数×100%；平均通话时间=通话总时长÷请求总数',
+      qs: [
+        { label: '派单准确率', unit: '%', exp: dispatchOk / reqs * 100, tol: 0.11 },
+        { label: '录单率', unit: '%', exp: logged / calls * 100, tol: 0.11 },
+        { label: '平均通话时间', unit: '分钟', exp: talkMin / reqs, tol: 0.11 },
+      ],
+      steps: [
+        `派单准确率 = 首次派单解决数 ÷ 请求总数 × 100% = ${dispatchOk}÷${reqs}×100% = <b>${(dispatchOk / reqs * 100).toFixed(1)}</b>%`,
+        `录单率 = 完成记录数 ÷ 呼叫总数 × 100% = ${logged}÷${calls}×100% = <b>${(logged / calls * 100).toFixed(1)}</b>%`,
+        `平均通话时间 = 通话总时长 ÷ 请求总数 = ${talkMin}÷${reqs} = <b>${talkMin / reqs}</b> 分钟`,
+      ],
+    };
+  },
+  // 7 人员效能：单位人均产出 / 招聘成功率 / 招聘达成率
+  () => {
+    const staff = pick([20, 25, 40, 50]), profit = pick([200, 400, 500]);
+    const interviewed = pick([60, 80, 100]), hired = Math.round(interviewed * pick([0.2, 0.25, 0.3]));
+    const planned = Math.ceil(hired / pick([0.7, 0.8]));
+    return {
+      name: '人员效能指标', hint: '写公式+过程+单位，比率保留 1 位小数',
+      desc: `某运维团队共有人员 ${staff} 人，年度净利润 ${profit} 万元。本年度招聘计划 ${planned} 人，共面试 ${interviewed} 人，实际到岗 ${hired} 人。请计算该团队单位人均产出、招聘成功率和招聘达成率。`,
+      src: '公式汇总第 9、14、15 条：人均产出=净利润÷人员数；招聘成功率=上岗÷面试×100%；招聘达成率=上岗÷计划×100%',
+      qs: [
+        { label: '单位人均产出', unit: '万元/人', exp: profit / staff, tol: 0.11 },
+        { label: '招聘成功率', unit: '%', exp: hired / interviewed * 100, tol: 0.11 },
+        { label: '招聘达成率', unit: '%', exp: hired / planned * 100, tol: 0.15 },
+      ],
+      steps: [
+        `单位人均产出 = 净利润 ÷ 人员数量 = ${profit}÷${staff} = <b>${Number((profit / staff).toFixed(1))}</b> 万元/人`,
+        `招聘成功率 = 实际上岗人数 ÷ 面试人数 × 100% = ${hired}÷${interviewed}×100% = <b>${(hired / interviewed * 100).toFixed(1)}</b>%`,
+        `招聘达成率 = 实际上岗人数 ÷ 计划招聘人数 × 100% = ${hired}÷${planned}×100% = <b>${(hired / planned * 100).toFixed(1)}</b>%`,
+      ],
+    };
+  },
+  // 8 设备综合效率 OEE
+  () => {
+    const planT = pick([480, 500, 520]);
+    const runT = Math.round(planT * pick([0.85, 0.9, 0.92]));
+    const speed = pick([10, 12, 15]);
+    const total = Math.round(speed * runT * pick([0.85, 0.9]));
+    const good = Math.round(total * pick([0.95, 0.97, 0.98]));
+    const avail = runT / planT * 100, perf = total / (speed * runT) * 100, qual = good / total * 100;
+    return {
+      name: '设备综合效率 OEE', hint: '写公式+过程，比率保留 1 位小数',
+      desc: `某设备本月计划运行 ${planT} 分钟，实际运行 ${runT} 分钟，理论生产速度 ${speed} 件/分钟，实际产量 ${total} 件，其中合格品 ${good} 件。请计算稼动率、性能效率、合格率及设备综合效率（OEE = 稼动率 × 性能效率 × 合格率）。`,
+      src: '公式汇总第 16 条：OEE=稼动率×性能效率×合格率',
+      qs: [
+        { label: '稼动率', unit: '%', exp: avail, tol: 0.15 },
+        { label: '性能效率', unit: '%', exp: perf, tol: 0.15 },
+        { label: '合格率', unit: '%', exp: qual, tol: 0.15 },
+        { label: '设备综合效率 OEE', unit: '%', exp: avail / 100 * perf / 100 * qual / 100 * 100, tol: 0.3 },
+      ],
+      steps: [
+        `稼动率 = 实际运行时间 ÷ 计划运行时间 = ${runT}÷${planT}×100% = <b>${avail.toFixed(1)}</b>%`,
+        `性能效率 = 实际产量 ÷（理论速度 × 实际运行时间）= ${total}÷(${speed}×${runT})×100% = <b>${perf.toFixed(1)}</b>%`,
+        `合格率 = 合格品数 ÷ 总产量 = ${good}÷${total}×100% = <b>${qual.toFixed(1)}</b>%`,
+        `OEE = ${avail.toFixed(1)}% × ${perf.toFixed(1)}% × ${qual.toFixed(1)}% = <b>${(avail / 100 * perf / 100 * qual / 100 * 100).toFixed(1)}</b>%`,
+      ],
+    };
+  },
+  // 9 存储性能 IOPS
+  () => {
+    const secs = pick([60, 120, 300]);
+    const iops = pick([2000, 3000, 6000]);
+    const ios = iops * secs;
+    return {
+      name: '存储性能 IOPS', hint: '写公式+过程+单位',
+      desc: `某存储系统在 ${secs} 秒的压测窗口内共完成 ${ios} 次 IO 操作。请计算该系统的 IOPS（每秒输入/输出操作数）以及平均每次 IO 操作的耗时（毫秒）。`,
+      src: '公式汇总第 20 条：IOPS = 总 IO 操作次数 ÷ 总时间（秒）',
+      qs: [
+        { label: 'IOPS', unit: '次/秒', exp: iops, tol: 0.5 },
+        { label: '平均每次 IO 耗时', unit: '毫秒', exp: secs / ios * 1000, tol: 0.011 },
+      ],
+      steps: [
+        `IOPS = 总 IO 次数 ÷ 总时间 = ${ios}÷${secs} = <b>${iops}</b> 次/秒`,
+        `平均每次 IO 耗时 = 总时间 ÷ 总次数 × 1000 = ${secs}÷${ios}×1000 = <b>${(secs / ios * 1000).toFixed(2)}</b> 毫秒`,
+      ],
+    };
+  },
 ];
 function genCalc() {
-  return CALC_TYPES[(SETNO - 1) % CALC_TYPES.length]();   // 按套号固定轮换，保证各套题型不同
+  return CALC_TYPES[(SETNO - 1) % CALC_TYPES.length]();   // 按套号固定轮换，保证各套初始题型不同
+}
+function swapCalc() {
+  let next = ri(CALC_TYPES.length);
+  if (CALC_TYPES.length > 1 && CALC_TYPES[next]().name === CASES.calc.name) next = (next + 1) % CALC_TYPES.length;
+  CASES.calc = CALC_TYPES[next]();
+  renderCalc();
 }
 const normT = s => (s || '').replace(/[\s，。、；：:（）()·""'']/g, '');
 
@@ -486,15 +580,23 @@ function renderCases() {
     </div>
     <div class="card case-card">
       <b>试题三（25 分）· 计算 + 理论默写</b>
-      <div class="ct">（一）计算题 · ${C.calc.name}<span class="small">（${C.calc.hint}。15 分）</span></div>
-      <div class="cbg"><b>题目：</b>${C.calc.desc}<span class="small">（${C.calc.src}）</span></div>
-      <div style="margin:8px 0;font-size:14.5px;line-height:2.4">
-        ${C.calc.qs.map((q, i) => `${q.label} <input class="blank" id="c3d${i}" autocomplete="off">${q.unit ? ' ' + q.unit : ''}`).join('<br>')}
-      </div>
-      <div class="ans" id="c3d-a"></div>
+      <div id="calcbox"></div>
       <div class="ct">（二）理论默写<span class="small">（每点 1 分，共 10 分制）</span></div>
       ${memxieHtml('c3q', C.m3, 2)}
     </div>`;
+  renderCalc();
+}
+function renderCalc() {
+  const cc = CASES.calc;
+  document.getElementById('calcbox').innerHTML = `
+    <div class="ct">（一）计算题 · ${cc.name}
+      <button onclick="swapCalc()" style="float:right;background:#fff;color:#1f4e79;border:1px solid #1f4e79;border-radius:6px;padding:2px 10px;font-size:13px;cursor:pointer">换一类 🔀</button>
+      <span class="small">（${cc.hint}。15 分）</span></div>
+    <div class="cbg"><b>题目：</b>${cc.desc}<span class="small">（${cc.src}）</span></div>
+    <div style="margin:8px 0;font-size:14.5px;line-height:2.4">
+      ${cc.qs.map((q, i) => `${q.label} <input class="blank" id="c3d${i}" autocomplete="off">${q.unit ? ' ' + q.unit : ''}`).join('<br>')}
+    </div>
+    <div class="ans" id="c3d-a"></div>`;
 }
 
 // ---------- 批改 ----------
