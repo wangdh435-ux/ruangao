@@ -302,7 +302,7 @@ function buildCases() {
 }
 
 // ---------- 渲染 ----------
-let MCQ = [], CASES = null, s1done = false, s2done = false;
+let MCQ = [], CASES = null, s1done = false, s2done = false, s1score = -1, s2score = -1;
 function renderMcq() {
   document.getElementById('mcq').innerHTML = MCQ.map((q, i) => `
     <div class="card">
@@ -388,10 +388,11 @@ function gradeMcq() {
   });
   const pass = ok >= 45;
   document.getElementById('score1').textContent = `${ok} / 75`;
+  document.getElementById('score1').style.color = pass ? '#1e7a38' : '#c0392b';
   document.getElementById('msg1').innerHTML = pass ? '✅ 达到合格线（45 分）' : `❌ 未达合格线 45 分，还差 ${45 - ok} 分——错题按"教材条目"逐条回炉`;
   document.getElementById('sum1').style.display = 'block';
   document.getElementById('bar1').style.display = 'none';
-  s1done = true; maybeAll();
+  s1score = ok; s1done = true; maybeAll();
 }
 function gradeMemxie(prefix, m) {
   let got = 0, total = 0;
@@ -473,15 +474,32 @@ function gradeCases() {
   const pct = Math.round(totalG / totalT * 75);
   const pass = pct >= 45;
   document.getElementById('score2').textContent = `约 ${pct} / 75`;
+  document.getElementById('score2').style.color = pass ? '#1e7a38' : '#c0392b';
   document.getElementById('msg2').innerHTML = (pass ? '✅ 达到合格线（45 分）' : `❌ 未达合格线 45 分`) + `<div class="small" style="margin-top:6px">${R.map(r => `${r[0]} ${r[1]}/${r[2]}`).join('　·　')}</div><div class="small">案例为按点模拟判分，正式考试主观题可酌情给分，实际得分通常更高</div>`;
   document.getElementById('sum2').style.display = 'block';
   document.getElementById('bar2').style.display = 'none';
-  s2done = true; maybeAll();
+  s2score = pct; s2done = true; maybeAll();
 }
 function maybeAll() {
   if (!s1done || !s2done) return;
-  document.getElementById('scoreAll').textContent = '本套完成 🎉';
-  document.getElementById('msgAll').innerHTML = '两科均需 ≥45 才算通过。错题请回到晨测或速记 APP 针对薄弱章重点复习，然后做下一套。';
+  const rows = [
+    ['综合知识', s1score, false],
+    ['案例分析', s2score, true],
+  ];
+  const fails = rows.filter(r => r[1] < 45);
+  const allPass = fails.length === 0;
+  const elS = document.getElementById('scoreAll');
+  elS.textContent = allPass ? '✅ 本套达标' : '❌ 本套未达标';
+  elS.style.color = allPass ? '#1e7a38' : '#c0392b';
+  document.getElementById('msgAll').innerHTML =
+    `<table style="margin:0 auto 10px;border-collapse:collapse;font-size:15px">
+      <tr style="color:#888;font-size:13px"><th style="padding:4px 14px">科目</th><th style="padding:4px 14px">得分</th><th style="padding:4px 14px">合格线 45 分</th></tr>
+      ${rows.map(r => `<tr><td style="padding:4px 14px">${r[0]}</td><td style="padding:4px 14px;font-weight:700;color:${r[1] >= 45 ? '#1e7a38' : '#c0392b'}">${r[2] ? '约 ' : ''}${r[1]} / 75</td><td style="padding:4px 14px">${r[1] >= 45 ? '✅ 过线' : `❌ 还差 ${45 - r[1]} 分`}</td></tr>`).join('')}
+      <tr><td style="padding:4px 14px">论文</td><td style="padding:4px 14px;color:#999">本卷不含</td><td style="padding:4px 14px;color:#999">正式考试需另行 ≥45</td></tr>
+    </table>`
+    + (allPass
+      ? '🎉 两科均过 45 分线。注意：正式考试还需论文同次 ≥45，三科全过才拿证。保持节奏，做下一套巩固。'
+      : `⚠️ <b>${fails.map(r => r[0]).join('、')}</b> 未过 45 分线。正式规则：任一科不过 = 本次不合格，且单科成绩不保留。请回到晨测 / 速记 APP 针对薄弱章复习后重做本套。`);
   document.getElementById('sumAll').style.display = 'block';
 }
 
