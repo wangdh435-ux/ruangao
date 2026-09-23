@@ -54,6 +54,15 @@ textarea { width: 100%; border: 1px solid #d5dae3; border-radius: 8px; padding: 
 textarea:focus { border-color: #1f4e79; background: #fbfdff; }
 .ct { font-weight: 600; color: #b25f00; margin: 16px 0 6px; border-top: 1px dashed #f0dcb8; padding-top: 12px; }
 .cbg { background: #f7f9fc; border-radius: 8px; padding: 12px 14px; margin: 6px 0; font-size: 14.5px; }
+.tabs { display: flex; gap: 10px; margin-bottom: 16px; }
+.tabs .tab { flex: 1; border: 1px solid #d5dae3; background: #fff; border-radius: 10px;
+  padding: 12px 8px; font-size: 15px; font-weight: 600; cursor: pointer; color: #555; }
+.tabs .tab.active { background: #1f4e79; color: #fff; border-color: #1f4e79; }
+.opts label { display: block; padding: 6px 10px; border-radius: 8px; margin: 2px 0; cursor: pointer; font-size: 15px; }
+.opts label:hover { background: #f0f5fb; }
+.opts label.right { background: #e8f7ee; color: #1e7a38; font-weight: 600; }
+.opts label.wrong { background: #fde8e8; color: #c0392b; }
+.chtag { font-size: 12px; color: #999; margin-left: 8px; font-weight: 400; }
 </style>
 </head>
 <body>
@@ -81,33 +90,41 @@ document.getElementById('gatepw').addEventListener('keydown',function(e){if(e.ke
     <div class="sub" id="hsub"></div>
   </header>
 
-  <div class="bar">
-    <span class="small">测验范围：</span>
-    <select id="scopeSel" onchange="gen();genCase()"></select>
-    <button onclick="gen()">🎲 换一套题</button>
-    <span class="small" id="poolinfo"></span>
+  <div class="tabs">
+    <button id="tabA" class="tab active" onclick="showTab('A')">📝 每日选择题 <span style="font-weight:400;font-size:13px">50 题 · 24 章全覆盖</span></button>
+    <button id="tabB" class="tab" onclick="showTab('B')">📋 案例分析 <span style="font-weight:400;font-size:13px">4 题型 · 独立批改</span></button>
   </div>
 
-  <div id="quiz"></div>
-
-  <div class="card" style="border-left:4px solid #e6a23c">
-    <b>📋 每日案例 · 四种题型各 1 道（理论默写 / 找错改错 / 判断选择 / 计算）</b>
-    <div class="small" style="margin:4px 0">2025 案例真题分布：<b>第6章云资源 25 分（33%）</b> · <b>第12章服务管理 16 分（21%）</b> · 第4章 11 分 · 第5章 11 分 · 第14章 9 分 · 第8章 3 分 —— 75 分全部出自方法篇+能力篇（4-17 章），案例练习优先选上方"案例高频章"</div>
-    <div class="small" style="margin:4px 0">按点给分，多答不扣分；口诀：<b>N+1 原则</b>（3 分的题写 4 个点）；顺序：先理论 → 再找错 → 最后计算</div>
-    <div id="case"></div>
+  <div id="paneA">
+    <div class="bar">
+      <span class="small" id="mcqinfo"></span>
+      <button onclick="genMcq(true)">🎲 换一批题</button>
+    </div>
+    <div id="mcq"></div>
+    <div class="card summary" id="msummary">
+      <div class="score" id="mscore"></div>
+      <div class="msg" id="mscoremsg"></div>
+      <button class="b-submit" style="border-radius:10px;padding:10px 26px;font-size:15px" onclick="redoMcq()">🔁 重做本批</button>
+      <button class="b-again" style="border-radius:10px;padding:10px 26px;font-size:15px" onclick="genMcq(true)">🎲 换一批</button>
+      <div class="hist" id="mhist" style="margin-top:16px"></div>
+    </div>
+    <div id="msubmitbar" style="display:none;position:sticky;bottom:0;background:rgba(242,243,247,.95);padding:12px 0;text-align:center;backdrop-filter:blur(4px)">
+      <button class="b-submit" style="border:0;border-radius:10px;padding:12px 34px;font-size:16px;font-weight:600;cursor:pointer" onclick="gradeMcq()">交卷批改 · 选择题</button>
+    </div>
   </div>
 
-  <div class="card summary" id="summary">
-    <div class="score" id="score"></div>
-    <div class="msg" id="scoremsg"></div>
-    <button class="b-submit" style="border-radius:10px;padding:10px 26px;font-size:15px" onclick="redo()">🔁 重做本套</button>
-    <button class="b-again" style="border-radius:10px;padding:10px 26px;font-size:15px" onclick="gen()">🎲 换一套</button>
-    <div class="hist" id="hist" style="margin-top:16px"></div>
-  </div>
-
-  <div id="submitbar" style="display:none">
-    <button class="b-submit" onclick="gradeAll()">交卷批改</button>
-    <button class="b-again" onclick="gen()">🎲 换一套</button>
+  <div id="paneB" style="display:none">
+    <div class="bar">
+      <span class="small">案例范围：</span>
+      <select id="scopeSel" onchange="genCase()"></select>
+      <button onclick="genCase()">🎲 换一套案例</button>
+    </div>
+    <div class="card" style="border-left:4px solid #e6a23c">
+      <b>📋 每日案例 · 四种题型各 1 道（理论默写 / 找错改错 / 判断选择 / 计算）</b>
+      <div class="small" style="margin:4px 0">2025 案例真题分布：<b>第6章云资源 25 分（33%）</b> · <b>第12章服务管理 16 分（21%）</b> · 第4章 11 分 · 第5章 11 分 · 第14章 9 分 · 第8章 3 分 —— 75 分全部出自方法篇+能力篇（4-17 章），案例练习优先选上方"案例高频章"</div>
+      <div class="small" style="margin:4px 0">按点给分，多答不扣分；口诀：<b>N+1 原则</b>（3 分的题写 4 个点）；顺序：先理论 → 再找错 → 最后计算</div>
+      <div id="case"></div>
+    </div>
   </div>
 </div>
 
@@ -117,7 +134,7 @@ const DAY = 86400000;
 const today0 = new Date(new Date().toDateString());
 const dayNum = Math.max(1, Math.min(33, Math.floor((today0 - new Date(DATA.start)) / DAY) + 1));
 const examIn = Math.ceil((new Date(DATA.exam) - today0) / DAY);
-const QN = 12;  // 每套题数
+const MCN = 50;  // 每日选择题题数（24 章全覆盖 + 重点章加权）
 
 // ---------- 核心卡（与手机APP同规则） ----------
 const CORE_PARTS = ['分章口诀', '案例背诵'];
@@ -182,118 +199,159 @@ function items(cards) {
   return Object.values(seen);
 }
 
-// ---------- 组卷 ----------
-let Q = [];
-function curCards() {
-  const v = document.getElementById('scopeSel').value;
-  if (v.startsWith('day')) return coreCards(+v.slice(3));
-  const g = GROUPS.find(x => x.key === v);
-  if (g) return DATA.cards.filter(c => g.test(c) && ['分章口诀', '案例背诵', '笔记补缺', '易混对比'].includes(c.part));
-  const st = STAGES.find(s => s.key === v);
-  return DATA.cards.filter(st.cards);
+// ---------- 每日选择题：24 章全覆盖 + 重点章加权（当天种子固定，可换一批） ----------
+let _s = 0;
+function srand(seed) { _s = seed >>> 0; }
+function rng() { _s |= 0; _s = _s + 0x6D2B79F5 | 0; let t = Math.imul(_s ^ _s >>> 15, 1 | _s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }
+const ri = n => Math.floor(rng() * n);
+const shuffled = a => { const r = [...a]; for (let i = r.length - 1; i > 0; i--) { const j = ri(i + 1); [r[i], r[j]] = [r[j], r[i]]; } return r; };
+
+// ---------- Tab 切换（选择题 / 案例分析分开，可只做其一） ----------
+function showTab(t) {
+  document.getElementById('paneA').style.display = t === 'A' ? 'block' : 'none';
+  document.getElementById('paneB').style.display = t === 'B' ? 'block' : 'none';
+  document.getElementById('tabA').classList.toggle('active', t === 'A');
+  document.getElementById('tabB').classList.toggle('active', t === 'B');
+  try { localStorage.setItem('sg_morning_tab', t); } catch (e) {}
 }
-function gen() {
-  let pool = items(curCards());
-  // 当天内容太少时（如数字专项日），自动并入前两天的内容做滚动复习
-  const v = document.getElementById('scopeSel').value;
-  if (v.startsWith('day') && pool.length < 6) {
-    const d = +v.slice(3);
-    let extra = [];
-    for (let i = Math.max(1, d - 2); i < d; i++) extra = extra.concat(coreCards(i));
-    pool = pool.concat(items(extra));
-    document.getElementById('poolinfo').textContent = `当日题少，已并入前两天内容滚动复习，共 ${pool.length} 个考点`;
-  } else {
-    document.getElementById('poolinfo').textContent = `本题库共 ${pool.length} 个考点，随机抽 ${Math.min(QN, pool.length)} 题`;
+
+let MCQ = [];
+function mcqPool() {
+  const content = DATA.cards.filter(c => ['分章口诀', '案例背诵', '笔记补缺', '易混对比', '数字专项'].includes(c.part) && !c.title.includes('总表'));
+  return items(content).filter(it => it.members.length >= 3 && it.chapNum > 0);
+}
+function pickOutsider(pool, it, sameChap) {
+  for (let g = 0; g < 60; g++) {
+    const src = (sameChap.length && rng() < 0.7) ? sameChap : pool;
+    const o = src[ri(src.length)];
+    const idx = ri(o.members.length);
+    if (!it.members.includes(o.members[idx])) return o.disp[idx];
   }
-  Q = [];
-  const used = new Set();
-  // 按章节权重构建抽样池（高频章出现概率更高）
+  return null;
+}
+function buildOne(pool, it) {
+  const sameChap = pool.filter(o => o !== it && o.chapNum === it.chapNum);
+  let type, opts, correct;
+  if (it.members.length >= 4 && rng() < 0.45) {
+    type = 0;   // 选"不属于"的一项
+    const ownIdx = shuffled(it.members.map((_, i) => i)).slice(0, 3);
+    const out = pickOutsider(pool, it, sameChap);
+    if (!out) return null;
+    opts = shuffled([...ownIdx.map(i => it.disp[i]), out]);
+    correct = opts.indexOf(out);
+  } else {
+    type = 1;   // 选"属于"的一项
+    const ownI = ri(it.members.length);
+    const outs = []; let g = 0;
+    while (outs.length < 3 && g++ < 80) { const o = pickOutsider(pool, it, sameChap); if (o && !outs.includes(o)) outs.push(o); }
+    if (outs.length < 3) return null;
+    opts = shuffled([it.disp[ownI], ...outs]);
+    correct = opts.indexOf(it.disp[ownI]);
+  }
+  return { it, type, opts, correct };
+}
+function genMcq(reshuffle) {
+  const seed = reshuffle ? (Math.random() * 0xffffffff) >>> 0
+    : +(String(today0.getFullYear()) + String(today0.getMonth() + 1).padStart(2, '0') + String(today0.getDate()).padStart(2, '0'));
+  srand(seed);
+  const pool = mcqPool();
+  const byChap = {};
+  pool.forEach(it => { (byChap[it.chapNum] = byChap[it.chapNum] || []).push(it); });
+  const qs = [], used = new Set();
+  // 第一步：每章至少 1 题，保证全部章考点都覆盖
+  Object.keys(byChap).map(Number).sort((a, b) => a - b).forEach(ch => {
+    if (qs.length >= MCN) return;
+    const arr = byChap[ch];
+    for (let g = 0; g < 40; g++) {
+      const it = arr[ri(arr.length)];
+      if (used.has(it.label)) continue;
+      const q = buildOne(pool, it);
+      if (q) { used.add(it.label); qs.push(q); break; }
+    }
+  });
+  // 第二步：重点章（2025 真题高分章）每章固定再加 2 题
+  [6, 12, 4, 5, 14, 17].forEach(ch => {
+    if (!byChap[ch]) return;
+    for (let k = 0; k < 2 && qs.length < MCN; k++) {
+      const arr = byChap[ch];
+      for (let g = 0; g < 40; g++) {
+        const it = arr[ri(arr.length)];
+        if (used.has(it.label)) continue;
+        const q = buildOne(pool, it);
+        if (q) { used.add(it.label); qs.push(q); break; }
+      }
+    }
+  });
+  // 第三步：按 2025 真题重点章权重补足剩余题
   const wpool = [];
   pool.forEach(it => { const w = CHAP_W[it.chapNum] || 1; for (let k = 0; k < w; k++) wpool.push(it); });
   let guard = 0;
-  while (Q.length < Math.min(QN, pool.length) && guard++ < 800) {
-    const it = wpool[Math.floor(Math.random() * wpool.length)];
+  while (qs.length < MCN && guard++ < 3000) {
+    const it = wpool[ri(wpool.length)];
     if (used.has(it.label)) continue;
-    used.add(it.label);
-    const ans = it.blankable[Math.floor(Math.random() * it.blankable.length)];
-    Q.push({ ...it, ans });
+    const q = buildOne(pool, it);
+    if (q) { used.add(it.label); qs.push(q); }
   }
-  render();
+  MCQ = qs;
+  renderMcq();
 }
-function render() {
-  document.getElementById('summary').style.display = 'none';
-  document.getElementById('submitbar').style.display = Q.length ? 'block' : 'none';
-  const el = document.getElementById('quiz');
-  if (!Q.length) { el.innerHTML = '<div class="card">该范围暂无合适题目，请换个范围</div>'; return; }
-  el.innerHTML = Q.map((q, i) => {
-    const shown = q.members.map(m => m === q.ans
-      ? `<input class="blank" id="b${i}" data-i="${i}" placeholder="?" autocomplete="off">`
-      : `<span>${m}</span>`).join('、');
-    return `<div class="card" id="q${i}">
-      <div class="q-head"><span class="no">第 ${i + 1} 题</span>「${q.label}」<span class="small">（共 ${q.members.length} 项，补全缺的一项）</span></div>
-      <div class="q-body">${shown}</div>
-      <div class="ans" id="a${i}">
-        <div class="row"><span class="tag key">答案</span><b>${q.ans}</b><span class="mark" id="m${i}"></span></div>
-        <div class="row"><span class="tag src">溯源</span>${q.part} · ${q.chap}</div>
-        <div class="row"><span class="tag exp">完整条目</span>${q.raw}</div>
-        ${q.key ? `<div class="row"><span class="tag key">口诀</span>🔑 "${q.key}"</div>` : ''}
-      </div></div>`;
-  }).join('');
-  const first = document.getElementById('b0');
-  if (first) first.focus();
-  // 回车跳下一空
-  document.querySelectorAll('.blank').forEach(inp => {
-    inp.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        const n = +inp.dataset.i + 1;
-        const nx = document.getElementById('b' + n);
-        if (nx) nx.focus(); else gradeAll();
-      }
-    });
-  });
+function renderMcq() {
+  document.getElementById('msummary').style.display = 'none';
+  document.getElementById('msubmitbar').style.display = MCQ.length ? 'block' : 'none';
+  const nchap = new Set(MCQ.map(q => q.it.chapNum)).size;
+  document.getElementById('mcqinfo').textContent = `今日 ${MCQ.length} 题 · 覆盖 ${nchap} 章（每章≥1 题，第 6/12/4/5/14/17 章按真题权重加权）`;
+  document.getElementById('mcq').innerHTML = MCQ.map((q, i) => `
+    <div class="card">
+      <div class="q-head"><span class="no">${i + 1}.</span>${q.type ? '下列哪一项<b>属于</b>' : '下列哪一项<b>不属于</b>'}「${q.it.label}」？<span class="chtag">第 ${q.it.chapNum} 章</span></div>
+      <div class="opts">${q.opts.map((o, oi) => `<label id="mo${i}_${oi}"><input type="radio" name="m${i}" value="${oi}"> ${String.fromCharCode(65 + oi)}. ${o}</label>`).join('')}</div>
+      <div class="ans" id="ma${i}">
+        <div class="row"><span class="tag key">答案</span><b>${String.fromCharCode(65 + q.correct)}. ${q.opts[q.correct]}</b></div>
+        <div class="row"><span class="tag exp">完整教材条目</span>${q.it.raw}</div>
+        <div class="row"><span class="tag src">溯源</span>${q.it.part} · ${q.it.chap}${q.it.key ? `　🔑 口诀 "${q.it.key}"` : ''}</div>
+      </div>
+    </div>`).join('');
 }
-const norm = s => (s || '').replace(/[\s，。、；：:（）()·""'']/g, '').toLowerCase();
-function gradeAll() {
+function gradeMcq() {
   let ok = 0;
-  Q.forEach((q, i) => {
-    const inp = document.getElementById('b' + i);
-    const right = norm(inp.value) === norm(q.ans);
-    inp.classList.add(right ? 'ok' : 'bad');
-    inp.disabled = true;
-    if (!right) inp.value = inp.value + '  ✗';
-    document.getElementById('m' + i).textContent = right ? '✅' : '❌ 你的答案：' + (inp.value || '（空）');
-    document.getElementById('a' + i).style.display = 'block';
-    if (right) ok++;
+  const wrongChap = {};
+  MCQ.forEach((q, i) => {
+    const sel = document.querySelector(`input[name="m${i}"]:checked`);
+    const v = sel ? +sel.value : -1;
+    const right = v === q.correct;
+    if (right) ok++; else wrongChap[q.it.chapNum] = (wrongChap[q.it.chapNum] || 0) + 1;
+    q.opts.forEach((o, oi) => {
+      const lb = document.getElementById(`mo${i}_${oi}`);
+      if (oi === q.correct) lb.classList.add('right');
+      else if (oi === v) lb.classList.add('wrong');
+    });
+    document.getElementById('ma' + i).style.display = 'block';
   });
-  const pct = Math.round(ok / Q.length * 100);
-  document.getElementById('score').textContent = `${ok} / ${Q.length}`;
-  document.getElementById('scoremsg').textContent =
-    pct >= 90 ? '🎉 优秀！昨天内容已内化' : pct >= 70 ? '💪 不错，错题看解释再记一遍' : '📖 建议回 App 把昨天的卡重刷一遍';
-  document.getElementById('summary').style.display = 'block';
-  document.getElementById('submitbar').style.display = 'none';
-  // 历史记录
-  const h = JSON.parse(localStorage.getItem('sg_morning') || '[]');
-  h.unshift({ d: new Date().toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }), s: `${ok}/${Q.length}`, scope: document.getElementById('scopeSel').selectedOptions[0].text });
-  localStorage.setItem('sg_morning', JSON.stringify(h.slice(0, 10)));
-  document.getElementById('hist').innerHTML = '最近记录：' + h.slice(0, 5).map(x => `${x.d} <b>${x.s}</b>（${x.scope}）`).join('　');
-  document.getElementById('summary').scrollIntoView({ behavior: 'smooth' });
+  const pct = Math.round(ok / MCQ.length * 100);
+  const pass = pct >= 60;
+  const elS = document.getElementById('mscore');
+  elS.textContent = `${ok} / ${MCQ.length}`;
+  elS.style.color = pass ? '#1e7a38' : '#c0392b';
+  const wc = Object.entries(wrongChap).sort((a, b) => b[1] - a[1]).map(([c, n]) => `第${c}章×${n}`).join('　');
+  document.getElementById('mscoremsg').innerHTML =
+    (pass ? '✅ 达标（正确率 ≥60%）' : '❌ 未达 60%——逐题看"完整教材条目"回炉') +
+    (wc ? `<div class="small" style="margin-top:6px">错题分布：${wc}　→ 今晚速记 APP 重点刷这些章</div>` : '<div class="small" style="margin-top:6px">全对 🎉 可以换一批巩固</div>');
+  document.getElementById('msummary').style.display = 'block';
+  document.getElementById('msubmitbar').style.display = 'none';
+  const h = JSON.parse(localStorage.getItem('sg_mcq') || '[]');
+  h.unshift({ d: new Date().toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }), s: `${ok}/${MCQ.length}` });
+  localStorage.setItem('sg_mcq', JSON.stringify(h.slice(0, 10)));
+  document.getElementById('mhist').innerHTML = '最近记录：' + h.slice(0, 5).map(x => `${x.d} <b>${x.s}</b>`).join('　');
+  document.getElementById('msummary').scrollIntoView({ behavior: 'smooth' });
 }
-function redo() {
-  Q.forEach((q, i) => {
-    const inp = document.getElementById('b' + i);
-    inp.disabled = false; inp.value = ''; inp.classList.remove('ok', 'bad');
-    document.getElementById('a' + i).style.display = 'none';
+function redoMcq() {
+  MCQ.forEach((q, i) => {
+    const sel = document.querySelector(`input[name="m${i}"]:checked`);
+    if (sel) sel.checked = false;
+    q.opts.forEach((o, oi) => document.getElementById(`mo${i}_${oi}`).classList.remove('right', 'wrong'));
+    document.getElementById('ma' + i).style.display = 'none';
   });
-  // 案例区一并重置：清空作答、隐藏答案与得分
-  const caseEl = document.getElementById('case');
-  caseEl.querySelectorAll('textarea, input.blank').forEach(el => { el.value = ''; el.disabled = false; el.classList.remove('ok', 'bad'); });
-  caseEl.querySelectorAll('input[type=radio]').forEach(el => { el.checked = false; });
-  caseEl.querySelectorAll('select').forEach(el => { el.value = ''; });
-  caseEl.querySelectorAll('.ans').forEach(el => { el.style.display = 'none'; el.innerHTML = ''; });
-  const cs = document.getElementById('case-score');
-  if (cs) cs.innerHTML = '';
-  document.getElementById('summary').style.display = 'none';
-  document.getElementById('submitbar').style.display = 'block';
+  document.getElementById('msummary').style.display = 'none';
+  document.getElementById('msubmitbar').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -802,19 +860,19 @@ function gradeCase() {
 // ---------- 初始化 ----------
 (function init() {
   const yd = Math.max(1, dayNum - 1);
-  const yCards = coreCards(yd);
-  const yChaps = [...new Set(yCards.map(c => c.title.replace(/^(第 \d+ 章).*$/, '$1').slice(0, 8)))].join('、');
   document.getElementById('hsub').textContent =
-    `今天 ${new Date().getMonth() + 1}月${new Date().getDate()}日 · 备考第 ${dayNum} 天 · 距 10/24 考试 ${examIn} 天 · 本套题来自第 ${yd} 天打卡内容（${yCards.length} 张核心卡）`;
+    `今天 ${new Date().getMonth() + 1}月${new Date().getDate()}日 · 备考第 ${dayNum} 天 · 距 10/24 考试 ${examIn} 天 · 选择题 / 案例分析可分开独立作答`;
   const sel = document.getElementById('scopeSel');
   let opts = `<option value="day${yd}" selected>昨日打卡内容（第${yd}天）</option>`;
   opts += `<option value="day${dayNum}">今日内容（第${dayNum}天）</option>`;
   for (let d = 1; d <= 33; d++) opts += `<option value="day${d}">第${d}天内容</option>`;
   GROUPS.forEach(g => opts += `<option value="${g.key}">${g.name}</option>`);
-  STAGES.forEach(s => opts += `<option value="${s.key}">${s.name}</option>`);
   sel.innerHTML = opts;
-  gen();
+  genMcq(false);
   genCase();
+  let t = 'A';
+  try { t = localStorage.getItem('sg_morning_tab') || 'A'; } catch (e) {}
+  showTab(t);
 })();
 </script>
 </body>
