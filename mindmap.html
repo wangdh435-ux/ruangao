@@ -37,6 +37,21 @@
   .hook { color:#c0392b; font-weight:700; }
   footer { position:fixed; bottom:0; left:0; right:0; background:#ffffffee; color:#667;
            font-size:12px; padding:6px 16px; border-top:1px solid #e3e7ec; }
+  /* 手机：竖向大纲式树，从上往下、逐层缩进、大触点 */
+  @media (max-width: 768px) {
+    header { padding: 8px 10px; gap: 6px; }
+    header h1 { font-size: 14px; flex: 1 1 100%; }
+    header input { flex: 1 1 100%; width: auto; }
+    #map { padding: 10px 8px 90px; overflow: visible; }
+    .node { flex-direction: column; align-items: stretch; }
+    .label { max-width: none; font-size: 15px; line-height: 1.65; padding: 10px 12px;
+             margin: 4px 0; border-radius: 10px; }
+    .lv0 > .label { font-size: 16px; }
+    .children { padding-left: 16px; }
+    .children::before { left: 5px; top: 6px; bottom: 12px; border-left-width: 2px; }
+    .children > .node::before { left: -11px; top: 20px; width: 11px; }
+    footer { font-size: 11px; padding: 5px 10px; }
+  }
 </style>
 </head>
 <body>
