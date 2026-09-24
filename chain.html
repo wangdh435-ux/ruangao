@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>逻辑推导链 · 系统规划与管理师</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #f2f3f7; color: #222; }
+header { position: sticky; top: 0; z-index: 9; background: #1f4e79; color: #fff; padding: 10px 14px; display: flex; align-items: center; gap: 12px; }
+header h1 { font-size: 17px; font-weight: 600; flex: 1; }
+header a.home { color: #fff; text-decoration: none; font-size: 13px; background: #ffffff2b; border-radius: 6px; padding: 4px 10px; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 14px 12px 60px; }
+.intro { background: #fff8ec; border: 1px solid #f0dfb8; border-radius: 12px; padding: 12px 16px; font-size: 14px; color: #6b5300; line-height: 1.7; margin-bottom: 14px; }
+h2 { font-size: 17px; color: #1f4e79; margin: 22px 4px 10px; }
+.chain { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.07); padding: 16px 18px; margin-bottom: 12px; border-left: 5px solid #1f4e79; }
+.chain.formula { border-left-color: #e6a23c; }
+.chain h3 { font-size: 16px; color: #1f4e79; margin-bottom: 8px; }
+.chain h3 .tag { font-size: 12px; background: #eef2f8; border-radius: 6px; padding: 2px 8px; color: #1f4e79; margin-left: 8px; font-weight: 400; }
+.steps { font-size: 14.5px; line-height: 1.9; color: #333; }
+.steps b { color: #c0392b; }
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0; font-size: 14px; }
+.flow span { background: #eef2f8; border-radius: 8px; padding: 4px 10px; color: #1f4e79; font-weight: 600; }
+.flow i { color: #98a4b3; font-style: normal; }
+.result { margin-top: 8px; background: #eef7ee; border-radius: 8px; padding: 8px 12px; font-size: 14px; color: #1d6b2a; line-height: 1.7; }
+.warn { margin-top: 8px; background: #fdf0ef; border-radius: 8px; padding: 8px 12px; font-size: 13.5px; color: #a33; line-height: 1.7; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🔗 逻辑推导链 · 不用背，会推就行</h1>
+  <a class="home" href="index.html">🏠 首页</a>
+</header>
+<div class="wrap">
+
+<div class="intro">
+这一页专门为"逻辑强、记忆弱"准备：以下内容<b>不需要背</b>，考场上顺着推导链现场重建即可。
+每条链只记<b style="color:#c0392b">起点</b>和<b style="color:#1d6b2a">结论锚点</b>，中间步骤靠逻辑补。
+口诀卡片负责"是什么"，这一页负责"为什么"。
+</div>
+
+<h2>一、公式推导链（案例计算题直接套）</h2>
+
+<div class="chain formula">
+<h3>1. 可靠性三连：MTBF / MTTR / MTBSI <span class="tag">12 章 ⭐计算高频</span></h3>
+<div class="steps">起点：系统的一生只有两种状态——<b>在跑</b>或<b>在修</b>。</div>
+<div class="flow"><span>运行时间 ÷ 故障次数</span><i>＝</i><span>MTBF 平均无故障时间</span></div>
+<div class="flow"><span>修复耗时 ÷ 故障次数</span><i>＝</i><span>MTTR 平均修复时间</span></div>
+<div class="flow"><span>MTBF ＋ MTTR</span><i>＝</i><span>MTBSI 平均故障间隔（一个完整周期）</span></div>
+<div class="result">锚点：分母都是"次数"；MTBF 越长越可靠，MTTR 越短越好修。可用性 = MTBF ÷ MTBSI（跑的时间占整个周期的比例）。</div>
+</div>
+
+<div class="chain formula">
+<h3>2. 项目效益三连 <span class="tag">4 章</span></h3>
+<div class="steps">起点：老板只关心三件事——赚了多少、占本钱几成、一元投入换几元。</div>
+<div class="flow"><span>收入 − 开支</span><i>＝</i><span>净产出（利润来源）</span></div>
+<div class="flow"><span>利润 ÷ 投资总额 ×100%</span><i>＝</i><span>投资回报率（横向比项目）</span></div>
+<div class="flow"><span>投入 : 收入 ＝ 1 : N</span><i>＝</i><span>投入产出比，N 越大越好</span></div>
+<div class="result">锚点：先算净产出，再算回报率，最后看 1:N。三步顺序就是分析顺序。</div>
+</div>
+
+<div class="chain formula">
+<h3>3. SLA 达成率 <span class="tag">12 章</span></h3>
+<div class="flow"><span>SLA 达成的事件数 ÷ 事件总数 ×100%</span><i>＝</i><span>SLA 达成率</span></div>
+<div class="result">锚点："达成"是分子、"全部"是分母——所有"率"类公式都是这个套路：达标数 ÷ 总数。</div>
+</div>
+
+<div class="chain formula">
+<h3>4. 服务台四指标：一条流水线 <span class="tag">12 章</span></h3>
+<div class="steps">起点：用户打电话进来，服务台的动作顺序是<b>接 → 录 → 派 → 聊</b>，四指标各管一环：</div>
+<div class="flow"><span>接听率＝响应电话 ÷ 呼叫总数</span><i>→</i><span>录单率＝记录事件 ÷ 呼叫总数</span></div>
+<div class="flow"><span>派单准确率＝首次派单即解决 ÷ 事件总数</span><i>→</i><span>平均通话时间＝通话总时长 ÷ 事件数</span></div>
+<div class="result">锚点：记住流水线顺序"接录派聊"，四个公式自然对号入座。</div>
+<div class="warn">⚠️ 机构资料原文给"平均通话时间"也加了 ×100%，那是 OCR 瑕疵——时间是比值不是百分比，考试写"总时长 ÷ 事件数"即可。</div>
+</div>
+
+<div class="chain formula">
+<h3>5. 招聘两率：分母不同是考点 <span class="tag">13 章</span></h3>
+<div class="flow"><span>上岗 ÷ <b>面试</b></span><i>＝</i><span>招聘成功率（选拔眼光准不准）</span></div>
+<div class="flow"><span>上岗 ÷ <b>计划</b></span><i>＝</i><span>招聘达成率（任务完没完成）</span></div>
+<div class="result">锚点：分子都是"上岗"，分母一个看过程（面试）、一个看目标（计划）。</div>
+</div>
+
+<div class="chain formula">
+<h3>6. OEE 设备综合效率 <span class="tag">22 章智能制造</span></h3>
+<div class="steps">起点：一台设备的理想产出被三层损耗吃掉——<b>没开够时间、没跑够速度、没全合格</b>。</div>
+<div class="flow"><span>稼动率（时间）</span><i>×</i><span>性能效率（速度）</span><i>×</i><span>合格率（质量）</span><i>＝</i><span>OEE</span></div>
+<div class="result">锚点：三重损耗连乘，所以 OEE 永远小于任何一个单项。</div>
+</div>
+
+<div class="chain formula">
+<h3>7. 风险值与 EMV <span class="tag">17 章</span></h3>
+<div class="flow"><span>风险概率 × 风险影响</span><i>＝</i><span>风险值（排序用）</span></div>
+<div class="flow"><span>概率 × 收益，各分支求和</span><i>＝</i><span>EMV 期望货币价值（决策树选最大）</span></div>
+<div class="result">锚点：都是"概率 × 后果"，一个用于排风险优先级，一个用于选方案。</div>
+</div>
+
+<div class="chain formula">
+<h3>8. PUE 与 IOPS <span class="tag">6 章</span></h3>
+<div class="flow"><span>总用电 ÷ IT 设备用电</span><i>＝</i><span>PUE → 极限是 1（电全用在 IT 上）</span></div>
+<div class="flow"><span>IO 总次数 ÷ 总秒数</span><i>＝</i><span>IOPS（每秒操作数）</span></div>
+<div class="result">锚点：PUE 分母是"有用的电"，越接近 1 越绿色；IOPS 名字就是公式。</div>
+</div>
+
+<h2>二、概念推导链（选择题靠推不靠背）</h2>
+
+<div class="chain">
+<h3>9. IaaS → PaaS → SaaS → FaaS <span class="tag">6 章 ⭐必考</span></h3>
+<div class="steps">起点：用户<b>管的东西越来越少</b>，一层层把麻烦外包出去：</div>
+<div class="flow"><span>IaaS 管应用+数据</span><i>→</i><span>PaaS 只管开发</span><i>→</i><span>SaaS 啥都不管</span><i>→</i><span>FaaS 只写函数</span></div>
+<div class="result">锚点：场景判断题倒着推——"用户还想管到哪一层"就选哪种服务。</div>
+</div>
+
+<div class="chain">
+<h3>10. DAS → NAS → SAN → 对象存储 <span class="tag">1/6 章</span></h3>
+<div class="flow"><span>DAS 直连不共享</span><i>→</i><span>NAS 文件级走 TCP/IP</span><i>→</i><span>SAN 块级走 FC 高性能</span><i>→</i><span>对象存储海量扁平寻址</span></div>
+<div class="result">锚点：演进动力 = 共享范围越来越大、网络依赖越来越强。"文件级还是块级"是 NAS/SAN 的分水岭。</div>
+</div>
+
+<div class="chain">
+<h3>11. C/S 两层 → 三层 → B/S <span class="tag">5 章</span></h3>
+<div class="steps">起点：业务逻辑放哪里的"搬家史"——客户端太胖就抽出来，抽到浏览器只剩壳。</div>
+<div class="flow"><span>两层（客户端胖、难维护）</span><i>→</i><span>三层（业务抽进应用服务器）</span><i>→</i><span>B/S（浏览器即可，性能略低）</span></div>
+<div class="result">锚点：每次演进都是"客户端再瘦一点"。</div>
+</div>
+
+<div class="chain">
+<h3>12. DIKW 与数据价值化 <span class="tag">2/8 章</span></h3>
+<div class="flow"><span>数据</span><i>→</i><span>信息</span><i>→</i><span>知识</span><i>→</i><span>智慧</span><i>（加工越来越深）</i></div>
+<div class="flow"><span>资源化</span><i>→</i><span>资产化</span><i>→</i><span>资本化</span><i>（越来越值钱）</i></div>
+<div class="result">锚点：两条链都是"加工程度/价值程度递进"，钩子是"源产本"。</div>
+</div>
+
+<div class="chain">
+<h3>13. 诺兰六阶段：费用曲线逼出来的 <span class="tag">1 章 ⭐</span></h3>
+<div class="steps">起点：IT 花钱先慢后猛再受控，管理水平跟着费用走：</div>
+<div class="flow"><span>初始（财务先用）</span><i>→</i><span>传播（冗余失控）</span><i>→</i><span>控制（上数据库）</span><i>｜</i><span>集成（费用猛增）</span><i>→</i><span>数据管理</span><i>→</i><span>成熟</span></div>
+<div class="result">锚点：前三段是"计算机时代"、后三段是"信息时代"；钩子"初传控，集数熟"。考题给特征推阶段：见"冗余"选传播，见"费用猛增"选集成。</div>
+</div>
+
+<div class="chain">
+<h3>14. 数字化转型成熟度五级 <span class="tag">2/21 章 ⭐</span></h3>
+<div class="flow"><span>转型意识</span><i>→</i><span>局部应用</span><i>→</i><span>关键业务集成</span><i>→</i><span>数据驱动优化</span><i>→</i><span>生态价值构建</span></div>
+<div class="result">锚点：范围逻辑——从"想不想"到"局部"到"全局"到"优化"到"对外生态"。钩子"意局集优生"。</div>
+</div>
+
+<div class="chain">
+<h3>15. 等保五级：看危害对象升级 <span class="tag">9 章 ⭐</span></h3>
+<div class="steps">起点：系统被破坏后<b>害到谁</b>，决定国家管多严：</div>
+<div class="flow"><span>害公民 → 自主保护</span><i>→</i><span>害社会 → 指导/监督</span><i>→</i><span>害国家 → 强制/专控</span></div>
+<div class="result">锚点：危害对象"个人→社会→国家"三级跳，监管强度"自指监强专"五级跟。先记危害对象，级别自然推出。</div>
+</div>
+
+<div class="chain">
+<h3>16. 开环 vs 闭环 vs 负反馈 <span class="tag">3 章</span></h3>
+<div class="flow"><span>开环：不看输出</span><i>→</i><span>闭环：看输出＝有反馈</span><i>→</i><span>负反馈：往回调，是基本形式</span></div>
+<div class="result">锚点：控制的目的就是"稳住"，所以负反馈（纠偏）是基本形式，正反馈（放大）是特例。</div>
+</div>
+
+<div class="chain">
+<h3>17. 组织体系三选一 <span class="tag">4 章</span></h3>
+<div class="flow"><span>集团管控强 → 集中式</span><i>｜</i><span>业务差异大 → 分权式</span><i>｜</i><span>稳敏分离 → 平衡矩阵式</span></div>
+<div class="result">锚点：权力分配的光谱——题目给场景特征，往"集权还是放权"上靠即可。</div>
+</div>
+
+<div class="chain">
+<h3>18. 瀑布 → V → 迭代 → 敏捷 <span class="tag">5/17 章</span></h3>
+<div class="steps">起点：需求越不确定，越要短周期交付：</div>
+<div class="flow"><span>瀑布（需求稳、顺序走）</span><i>→</i><span>V 模型（测试提前对应）</span><i>→</i><span>迭代（分批加功能降风险）</span><i>→</i><span>敏捷（拥抱变化）</span></div>
+<div class="result">锚点：选型题只看一个变量——需求清晰度。敏捷四价值钩子"个体、软件、合作、应变"，全是"左边 &gt; 右边"。</div>
+</div>
+
+<div class="chain">
+<h3>19. 事件 → 问题 → 变更 → 发布 <span class="tag">12 章 ⭐案例</span></h3>
+<div class="steps">起点：运维出事的处理链——<b>先救火，再除根，改动要受控，上线要打包</b>：</div>
+<div class="flow"><span>事件管理（恢复服务）</span><i>→</i><span>问题管理（找根因）</span><i>→</i><span>变更管理（受控修改）</span><i>→</i><span>发布管理（打包上线）</span></div>
+<div class="result">锚点：案例"找茬题"最常考的断点——只救火不除根（缺问题管理）、直接改不审批（缺变更管理）。</div>
+</div>
+
+<div class="chain">
+<h3>20. IT 服务生命周期 PIOIS <span class="tag">12 章</span></h3>
+<div class="flow"><span>规划设计 P</span><i>→</i><span>部署实施 I</span><i>→</i><span>服务运营 O</span><i>→</i><span>持续改进 I</span><i>→</i><span>监督管理 S（全程贯穿）</span></div>
+<div class="result">锚点：就是 PDCA 的 IT 服务版——先设计、再落地、再运营、再改进，监督贯穿全程。</div>
+</div>
+
+<div class="chain">
+<h3>21. 规划四方法：四个切入点 <span class="tag">4 章 ⭐</span></h3>
+<div class="flow"><span>SST 从战略翻过来</span><i>｜</i><span>BSP 从业务过程+数据类推</span><i>｜</i><span>CSF 抓关键少数</span><i>｜</i><span>VCA 沿价值链找</span></div>
+<div class="result">锚点：记不住名字就记切入点——"战略映射 / 过程数据 / 关键因素 / 价值链"。选择题给描述推方法。</div>
+</div>
+
+<div class="chain">
+<h3>22. Zachman 框架 <span class="tag">4 章</span></h3>
+<div class="flow"><span>横向 6W：What/How/Where/Who/When/Why</span><i>×</i><span>纵向 6 层视角：范围→企业→系统→技术→详细→功能</span></div>
+<div class="result">锚点：横向就是英语课的 5W1H，纵向是"从老板到程序员"逐级细化——36 格矩阵不用背，两轴各自能推。</div>
+</div>
+
+</div>
+</body>
+</html>
