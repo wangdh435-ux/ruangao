@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>考点预测专区 · 系规 2026-10-25</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#f2f3f7;color:#222}
+.wrap{max-width:760px;margin:0 auto;padding:22px 14px 60px}
+header{background:linear-gradient(135deg,#1f4e79,#2e74b5);color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:16px;text-align:center}
+header h1{font-size:21px}
+header .sub{font-size:13px;opacity:.9;margin-top:6px}
+.modebar{display:flex;gap:10px;margin-bottom:16px}
+.modebar button{flex:1;border:0;border-radius:10px;padding:12px;font-size:16px;cursor:pointer;background:#fff;color:#1f4e79;box-shadow:0 1px 4px rgba(0,0,0,.08);font-weight:600}
+.modebar button.on{background:#1f4e79;color:#fff}
+.sec{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.07);padding:16px 18px;margin-bottom:14px}
+.sec h2{font-size:17px;color:#1f4e79;border-left:5px solid #e6a23c;padding-left:10px;margin-bottom:10px}
+.sec h3{font-size:15px;color:#1f4e79;margin:14px 0 8px}
+.casebg{background:#f6f8fb;border:1px dashed #b8c6da;border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.8;color:#444;margin-bottom:10px;white-space:pre-wrap}
+.qitem{border-top:1px solid #eee;padding:12px 0}
+.qitem:first-of-type{border-top:0}
+.qtitle{font-size:15px;font-weight:600;line-height:1.7;white-space:pre-wrap}
+.qtag{display:inline-block;font-size:11px;background:#eef3fa;color:#1f4e79;border-radius:4px;padding:1px 7px;margin-right:6px;vertical-align:2px}
+.ans{font-size:14px;line-height:1.9;color:#333;background:#fbf7ec;border-left:4px solid #e6a23c;border-radius:6px;padding:10px 12px;margin-top:8px;white-space:pre-wrap}
+.ans b{color:#b25f00}
+.btn{border:0;border-radius:8px;padding:8px 16px;font-size:14px;cursor:pointer;background:#1f4e79;color:#fff}
+.btn.ghost{background:#eef3fa;color:#1f4e79}
+.btn.warn{background:#c0392b}
+.btn.ok{background:#35a854}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.hidden{display:none}
+.flip{cursor:pointer}
+.flip .ans{display:none}
+.flip.open .ans{display:block}
+.hint{font-size:12px;color:#999;margin-top:4px}
+.scorebar{background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.07);font-size:15px;line-height:1.9}
+.prog{height:8px;background:#eee;border-radius:4px;overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;background:#35a854;width:0}
+.genbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.genbar button{flex:1;min-width:150px;border:0;border-radius:10px;padding:13px;font-size:15px;cursor:pointer;font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.genbar .g1{background:#1f4e79;color:#fff}
+.genbar .g2{background:#e6a23c;color:#fff}
+.genbar .g3{background:#fff;color:#c0392b;border:1px solid #c0392b}
+.toc{font-size:13.5px;line-height:2}
+.toc a{color:#1f4e79;text-decoration:none}
+.essay{font-size:13.5px;line-height:1.9;color:#444}
+.essay b{color:#1f4e79}
+.markline{display:flex;gap:8px;margin-top:8px;align-items:center;font-size:13px;color:#888}
+.stamp{font-size:12px;padding:2px 10px;border-radius:10px}
+.stamp.r{background:#e8f6ee;color:#35a854}
+.stamp.w{background:#fdecea;color:#c0392b}
+@media(max-width:520px){.genbar button{min-width:100%}}
+</style>
+</head>
+<body>
+<div id="gate" style="position:fixed;inset:0;background:linear-gradient(135deg,#1f4e79,#2e74b5);z-index:99999;display:flex;align-items:center;justify-content:center;font-family:'PingFang SC','Microsoft YaHei',sans-serif">
+  <div style="background:#fff;border-radius:14px;padding:30px 34px;text-align:center;max-width:320px;box-shadow:0 8px 30px rgba(0,0,0,.25)">
+    <div style="font-size:30px">🔒</div>
+    <div style="font-size:18px;font-weight:600;margin:6px 0">系规备考专区</div>
+    <div style="font-size:13px;color:#888;margin-bottom:14px">请输入访问密码</div>
+    <input id="gatepw" type="password" placeholder="访问密码" autocomplete="off" style="border:1px solid #d5dae3;border-radius:8px;padding:10px;width:100%;font-size:15px;outline:none;box-sizing:border-box">
+    <button onclick="gateTry()" style="margin-top:12px;background:#1f4e79;color:#fff;border:0;border-radius:8px;padding:10px 30px;font-size:15px;cursor:pointer;width:100%">进 入</button>
+    <div id="gatemsg" style="color:#c0392b;font-size:13px;margin-top:8px"></div>
+  </div>
+</div>
+<script>
+var GATE_HASH = 2671889770;
+function gateHash(s){var h=5381;for(var i=0;i<s.length;i++){h=(h*33+s.charCodeAt(i))>>>0}return h}
+function gateTry(){if(gateHash(document.getElementById('gatepw').value)===GATE_HASH){document.getElementById('gate').remove();try{sessionStorage.setItem('gate_ok','1')}catch(e){}}else{document.getElementById('gatemsg').textContent='密码不对，再试一次'}}
+try{if(sessionStorage.getItem('gate_ok')==='1'){document.getElementById('gate').remove()}}catch(e){}
+document.getElementById('gatepw').addEventListener('keydown',function(e){if(e.key==='Enter')gateTry()});
+</script>
+
+<div class="wrap">
+  <header>
+    <h1>🎯 考点预测专区</h1>
+    <div class="sub">系统规划与管理师 · 2026-10-25 考试 · 依据《考点预测-20261025-修订版》</div>
+  </header>
+
+  <div class="modebar">
+    <button id="mRead" class="on" onclick="setMode('read')">📖 背诵模式</button>
+    <button id="mTest" onclick="setMode('test')">📝 测试模式</button>
+  </div>
+
+  <!-- ============ 背诵模式 ============ -->
+  <div id="readMode">
+    <div class="sec">
+      <h2>案例预测 · 使用说明</h2>
+      <div class="toc">
+        ① <a href="#bigq">三道预测大题</a>（按 2025 真题结构命制，押 12/6/4-5/8/14 章）<br>
+        ② <a href="#qa">高频考点问答</a>（约 50 组，按预测梯队排序，点卡片翻面背答案）<br>
+        ③ <a href="#essay">论文预测要点</a>（唯一命题时代，三道押题全部成稿）<br>
+        <span class="hint">背诵模式答案直接可见；点任意答案卡可遮住自测。想打分自测，切到「测试模式」生成考题。</span>
+      </div>
+    </div>
+
+    <div class="sec" id="bigq">
+      <h2>一、案例预测 · 三道大题（题目 + 完整答案）</h2>
+      <div id="bigList"></div>
+    </div>
+
+    <div class="sec" id="qa">
+      <h2>二、高频考点问答（按预测梯队，点击卡片翻面）</h2>
+      <div id="qaList"></div>
+    </div>
+
+    <div class="sec" id="essay">
+      <h2>三、论文预测要点</h2>
+      <div class="essay">
+        <b>机制变化：</b>2025 起论文为<b>唯一命题</b>（不再二选一），策略 = 全方向备稿 + 两个万能项目背景（建设类/运维类各 500 字背熟）。<br><br>
+        <b>第一梯队（必须成稿）：</b><br>
+        ① 论云资源规划（6 章）：四种服务模式联系区别 / 计算资源规划 7 步 / 存储资源规划 9 步<br>
+        ② 论应用系统规划（5 章）：生命周期模型选型 / 可行性研究 4 内容 / 规划方法 APA·TOGAF·SOA<br>
+        ③ 论 IT 服务运营提升（12 章）：客户关系 7 活动 / 供应商管理 5 活动 / 服务营销 4 阶段<br><br>
+        <b>第二梯队（提纲备查）：</b>论信息系统规划（4）/ 论数据资源规划（8）/ 论信息安全规划（9）/ 论 IT 服务规划设计（防回马枪）<br><br>
+        <b>评分关键：</b>切合题意 30%（子题目逐条响应）+ 实践性 20%（≥3 处量化数据）；2500 字四段式、不写摘要。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 测试模式 ============ -->
+  <div id="testMode" class="hidden">
+    <div class="genbar">
+      <button class="g1" onclick="genQuiz('mix')">🎲 生成速测<br><small style="font-weight:400">8 题随机混合</small></button>
+      <button class="g2" onclick="genQuiz('big')">📄 生成完整大题<br><small style="font-weight:400">随机抽一道预测大题</small></button>
+      <button class="g3" onclick="genQuiz('wrong')">🔄 错题重练<br><small style="font-weight:400" id="wrongCnt">暂无错题记录</small></button>
+    </div>
+    <div id="scoreBox" class="scorebar hidden">
+      <span id="scoreTxt"></span>
+      <div class="prog"><i id="progBar"></i></div>
+    </div>
+    <div id="quizList"></div>
+    <div id="quizDone"></div>
+  </div>
+
+  <div style="text-align:center;font-size:12px;color:#aaa;margin-top:20px">
+    <a href="index.html" style="color:#1f4e79;text-decoration:none">← 返回备考专区首页</a>
+  </div>
+</div>
+
+<script>
+/* ================= 数据：三道预测大题 ================= */
+var BIG = [
+{
+ title:'试题一（25 分）· 政务云资源规划 【押第 6 章 + 第 8 章】',
+ bg:'某市大数据局启动政务云二期建设，承接全市 40 余个委办局的业务系统迁移上云。一期已建成基础云平台，采用虚拟化架构。二期面临：①各委办局影像、日志等非结构化数据年均增长约 60%，一期存储将饱和；②部分核心系统（如不动产登记）对数据主权要求高，需留在本地，其余系统可弹性部署；③局里要求对云资源使用建立常态化监测与优化机制，并对汇聚的数据开展统一管理。',
+ qs:[
+  {tag:'简答 6 分', q:'结合案例，简述云资源规划的基本流程。',
+   a:'云资源规划基本流程（5 阶段）：\n① 需求收集（理解业务目标、收集业务与负载数据）\n② 资源评估和规划（评估当前使用、预测需求，确定资源数量与类型）\n③ 预算管理（制订预算计划、评估定价、预测成本）\n④ 设计与实施（设计架构、选择云服务提供商、部署实施）\n⑤ 持续优化（监控性能/可用性/成本效益，按实际调整）'},
+  {tag:'计算 6 分', q:'核心系统某月（30 天）应运行 720 小时，期间故障 3 次，耗时分别为 2、3、1 小时。计算 MTBF、MTTR、MTBSI 和可用性（保留两位小数），写出公式和过程。',
+   a:'实际运行时间 = 720 − (2+3+1) = 714 小时\nMTBF = 运行时间÷故障次数 = 714÷3 = 238 小时\nMTTR = 故障耗时÷故障次数 = 6÷3 = 2 小时\nMTBSI = MTBF+MTTR = 238+2 = 240 小时\n可用性 = MTBF÷MTBSI = 238÷240 ≈ 99.17%\n（评分点：公式+过程+单位，缺一不可）'},
+  {tag:'简答 5 分', q:'结合"存储将饱和"问题，简述存储资源规划的关键过程。',
+   a:'存储资源规划 9 步：\n收集需求 → 分析和评估需求 → 技术选择（DAS/NAS/SAN/对象存储）→ 架构设计 → 安全规划 → 容量规划 → 性能优化 → 管理和监控 → 定期评估和调整'},
+  {tag:'简答 3 分', q:'结合"对汇聚的数据开展统一管理"，简述数据治理的主要活动。',
+   a:'数据治理 4 活动：\n① 规划组织的数据治理；② 制定数据治理战略；③ 实施数据治理；④ 嵌入数据治理'},
+  {tag:'判断 5 分', q:'判断正误：\n（1）私有云的核心属性是共享资源服务，通过互联网向公众提供\n（2）PUE 值越接近 1，数据中心绿色化程度越高\n（3）FaaS 适用于微服务架构、事件驱动架构和云原生应用\n（4）云数据中心网络扁平化要求增加网络层数，实现精细流量管控\n（5）核心系统留本地、其余弹性部署，属于混合云模式',
+   a:'（1）× 公有云核心属性才是共享资源服务；私有云是专有资源池\n（2）√\n（3）√\n（4）× 扁平化要求层数尽可能少（2025 真题变形再现）\n（5）√'}
+ ]
+},
+{
+ title:'试题二（25 分）· 集团信息系统规划 【押第 4/5 章】',
+ bg:'某能源集团下辖发电、输配、售电三大业务板块，信息系统长期处于"打基础"阶段，各板块系统独立建设、数据不通。集团启动数字化转型规划：战略层要求信息系统支撑"构生态"目标；规划团队先研究了集团战略与价值链，识别出影响转型成败的少数关键因素；随后对新建统一调度平台开展可行性论证；该平台需求明确、接口规范固定，要求一次性交付并严控变更；另有一个客户服务 App 项目，需求随市场快速变化，要求每两周交付一个可用版本。',
+ qs:[
+  {tag:'对号 8 分', q:'为下列场景选择最合适的规划方法（SST/BSP/CSF/VCA）：\n（1）将组织战略目标集合逐层转化为信息系统目标集合\n（2）从企业目标和管理功能出发，自上而下定义数据类和信息结构\n（3）识别影响企业成败的少数关键因素，围绕其确定系统开发重点\n（4）分析组织价值链，找出关键价值增加环节并明确信息技术支持方式',
+   a:'（1）SST 战略目标集转移法\n（2）BSP 企业信息系统规划法\n（3）CSF 关键成功因素法\n（4）VCA 价值链分析法'},
+  {tag:'简答 4 分', q:'简述 BSP 的 4 个基本步骤。',
+   a:'① 定义管理目标；② 定义管理功能；③ 定义数据类；④ 定义信息结构'},
+  {tag:'简答 7 分', q:'简述可行性研究的内容（4 分），以及可行性研究的三种结果（3 分）。',
+   a:'内容 4 方面：经济可行性、技术可行性、社会可行性、管理可行性\n三种结果：① 可行，按计划进行；② 基本可行，对要求或方案做必要修改；③ 不可行，不立项或终止项目'},
+  {tag:'分析 6 分', q:'（1）统一调度平台与客户服务 App 分别适合哪种生命周期模型？说明理由（4 分）\n（2）应用系统规划设计包括哪五项内容？（2 分）',
+   a:'（1）调度平台 → 瀑布模型（预测型）：需求明确、接口固定、一次交付、严控变更\nApp → 适应型（敏捷）/迭代模型：需求多变、频繁交付可用版本\n（2）五项内容：生命周期选择、体系结构定义、接口定义、数据定义、构件定义'}
+ ]
+},
+{
+ title:'试题三（25 分）· 政务大厅运维找茬 【押第 12 章 + 第 14 章】',
+ bg:'B 公司承接某省级政务服务中心运维项目，负责叫号系统、审批系统及 80 台终端，配项目经理 1 名、工程师 3 名。运行一年后：①报障有电话/微信/直接找工程师，服务台无专人，很多报障没记录；②所有故障按接收顺序处理，不分紧急程度；③数据库连接故障一月内发生 5 次，每次都重启恢复；④工程师直接改生产环境配置，未通知任何人，次日系统异常；⑤版本更新在营业时间直接上线，失败后无回退方案，业务中断 3 小时；⑥未签服务级别协议，标准仅凭口头承诺；⑦终端硬件故障联系厂商，但无支持合同，备件常不到位；⑧一年从未提交服务报告，也未做满意度调查；⑨骨干工程师离职后同类故障无人能处理，经验只在其个人电脑；⑩公司从未开展流程稽查或审计。年度考核中心很不满意，要求整改。',
+ qs:[
+  {tag:'找茬 10 分', q:'指出运维服务过程中存在的问题（答出 5 点以上满分）。',
+   a:'1.服务台不规范：无统一渠道、无专人、报障未记录\n2.事件管理缺失：无分级分类，未按紧急程度排序\n3.问题管理缺失：重复故障只救火不除根，未转问题管理\n4.变更管理缺失：生产环境修改未经评估审批\n5.发布管理缺失：无测试、无窗口期、无回退方案\n6.服务级别管理缺失：未签 SLA，考核无依据\n7.供应商管理缺失：未签 UC，备件无保障\n8.服务报告缺失：绩效不透明\n9.满意度/客户回顾缺失\n10.知识库缺失：经验依赖个人\n11.监督管理缺失：从未流程稽查/审计'},
+  {tag:'简答 5 分', q:'说明事件管理与问题管理的区别与联系。',
+   a:'区别：事件管理针对单个故障，目标快速恢复服务（救火）；问题管理针对重复故障/已知错误，目标深挖根因防止复发（除根）\n联系：事件可导入问题管理过程；案例中故障重复 5 次，应升级为问题管理，定位根因后通过变更管理彻底解决'},
+  {tag:'简答 4 分', q:'案例缺失哪些协议/合同？说明 SLA、OLA、UC 的签订对象和作用。',
+   a:'缺失 SLA 和 UC。\nSLA 服务级别协议：与客户签订，服务质量承诺，合法文档\nOLA 运营级别协议：与内部部门签订，后台支撑协议\nUC 支持合同：与外部供应商签订的正式合同，含法律责任'},
+  {tag:'简答 6 分', q:'（1）常见的流程检查方法有哪些？（4 分）\n（2）针对整改，简述服务改进的步骤。（2 分）',
+   a:'（1）流程检查 4 方法：流程稽查、流程绩效评估、满意度评估、流程审计\n（2）服务改进 3 步：服务改进设计 → 服务改进实施 → 服务改进验证'}
+ ]
+}
+];
+
+/* ================= 数据：高频考点问答 ================= */
+var QA = [
+ ['第 12 章 服务管理 ★第一梯队', [
+  ['过程要素设计 8 个过程','服务级别管理、服务报告管理、事件管理、问题管理、配置管理、变更管理、发布管理、信息安全管理'],
+  ['服务需求 6 类（25 已考）','可用性、连续性、服务能力、信息安全、价格、服务报告'],
+  ['服务级别设计 4 件','服务级别设计、SLA、OLA、UC'],
+  ['服务模式分类','远程（集中监控、远程技术支持）+ 现场（上门支持、驻场支持）'],
+  ['服务台设计要点','专门沟通渠道、专人负责、整合服务过程建立接收/记录/跟踪/反馈机制、日常监督考核'],
+  ['服务台 4 个关键测量指标','接听率、派单准确率、录单率、平均通话时间'],
+  ['服务质量 5 类特性','安全性、可靠性、响应性、有形性、友好性'],
+  ['质量检查 6 活动（25 已考）','满意度调查、项目质量保证、内审、管理评审、日常检查、质量文化培训'],
+  ['与客户回顾 8 内容','合同执行、目标达成、服务绩效(SLA)成果、满意度调查、服务范围工作量、业务需求变化、存在问题及行动计划、上次行动计划进展'],
+  ['服务改进 3 步骤','服务改进设计 → 服务改进实施 → 服务改进验证'],
+  ['服务成本 4 构成','直接人力、直接非人力、间接人力、间接非人力'],
+  ['服务外包收益 6 条','成本效益、效率提升、降低风险、专注主营业务、管理简单、提升满意度'],
+  ['服务退役终止 4 类风险','数据风险、业务连续性风险、法律法规风险、信息安全风险']
+ ]],
+ ['第 6 章 云资源规划 ★第一梯队', [
+  ['云资源规划基本流程 5 阶段','需求收集 → 资源评估和规划 → 预算管理 → 设计与实施 → 持续优化'],
+  ['云资源规划关键要素 7 个','业务需求分析、资源评估和规划、预算管理、安全和合规性、弹性和可扩展性、性能优化、监控和管理'],
+  ['四种服务模式场景速判','IaaS=基础设施/高性能计算/大规模数据；PaaS=开发部署环境；SaaS=办公软件/CRM/协作；FaaS=微服务/事件驱动/云原生'],
+  ['计算资源规划 4 方法（25 已考）','容量规划、性能优化、负载均衡、弹性伸缩'],
+  ['计算资源 4 种形态','虚拟机、容器、裸金属、GPU'],
+  ['存储资源规划 9 步','收集需求→分析评估→技术选择→架构设计→安全规划→容量规划→性能优化→管理监控→定期评估调整'],
+  ['云数据中心 5 大要素','面向服务、资源池化、高效智能、按需供给、低碳环保'],
+  ['云数据中心网络架构设计要素','可扩展、多路径容错、低时延、高带宽、模块化（扁平化=层数尽可能少）'],
+  ['常用虚拟化技术 4 类','硬件仿真、全虚拟化、半虚拟化、硬件辅助虚拟化']
+ ]],
+ ['第 4/5 章 规划方法族 ★第一梯队', [
+  ['规划 4 方法','SST 战略目标集转移、BSP 企业信息系统规划、CSF 关键成功因素、VCA 价值链分析（另记 Zachman 框架）'],
+  ['BSP 4 个基本步骤','定义管理目标 → 定义管理功能 → 定义数据类 → 定义信息结构'],
+  ['框架演进 3 主线（25 已考）','应用功能主线（中小/初级）→ 平台能力主线（自主沉淀+融合协同）→ 互联网主线（产业链/生态链）'],
+  ['规划工作要点 5 件','内外部需求挖掘、场景化模型分析、深度诊断与评估、整体与专项规划、持续改进'],
+  ['应用系统规划 5 内容+产出物','生命周期选择→生命周期模型；体系结构定义→整体视图；接口定义→用户/外部/内部接口；数据定义→数据模型和信息模型；构件定义→数据结构和算法'],
+  ['规划设计主要过程 5 步','初步调研 → 可行性研究 → 详细调研 → 系统分析 → 系统设计'],
+  ['可行性研究','内容：经济/技术/社会/管理；结果：可行 / 基本可行（修改）/ 不可行（终止）'],
+  ['详细调研 6 步（25 已考）','收集信息→需求建模→优先级划分→构建原型→评估候选方案→复查建议'],
+  ['生命周期模型速判','瀑布=需求明确一次交付严控变更；迭代/增量=逐步细化分期交付；敏捷/适应型=需求多变频繁交付；另有 V 模型、混合型'],
+  ['应用系统规划 3 方法','APA 应用系统组合法、TOGAF、SOA（组织级集成/业务流程/扩展重用/云与微服务/跨平台）']
+ ]],
+ ['第 8 章 数据资源规划 ★第二梯队（欠账最多）', [
+  ['数据资源发展 3 阶段','数据资源化 → 数据资产化 → 数据资本化'],
+  ['数据资源规划 3 方法（25 已考名称）','基于稳定信息过程、基于稳定信息结构、基于指标能力'],
+  ['稳定信息过程法 7 步','定义职能域→业务分析→数据分析→建基础标准→建功能模型→建数据模型→建关联模型'],
+  ['数据治理 4 活动','规划组织的数据治理 → 制定数据治理战略 → 实施 → 嵌入'],
+  ['治理战略 4 交付物','章程、运营框架和职责、实施路线图、为成功运营制订计划'],
+  ['数据质量 5 维度','一致性、完整性、合理性、唯一性、有效性'],
+  ['数据安全 5 活动','识别需求→制定制度→定义细则→评估当前风险→实施控制和规程'],
+  ['数据标准 3 类','指导标准、通用标准（数据类/服务类/管理与建设类）、专用标准']
+ ]],
+ ['第 14 章 规范与过程管理 ★第二梯队', [
+  ['流程检查 4 方法','流程稽查、流程绩效评估、满意度评估、流程审计'],
+  ['流程稽查 7 步','理解目的目标原则→确定关键点→确定稽查方法→设计线路与计划→开展稽查→提交报告→跟进整改'],
+  ['流程绩效评估 3 维度','效果、效率、弹性'],
+  ['绩效分析 4 方面','与目标对比、内部横向比较、与同行对手对比、结果稳定性分析'],
+  ['平衡计分卡 4 维度（25 已考）','财务、客户、流程、学习'],
+  ['流程优化需求 3 导向','问题导向、绩效导向、变革导向'],
+  ['标准化 8 原理','超前预防、系统优化、协商一致、统一有度、动变有序、互换兼容、阶梯发展、阻滞即废']
+ ]],
+ ['第 9 章 信息安全规划 ★第二梯队', [
+  ['信息安全 5 属性','保密性、完整性、可用性、可控性、不可否认性'],
+  ['信息安全规划 7 原则','系统性、适用性、时效性、确定性、可行性、易用性、合规性'],
+  ['等保 5 级','自主保护 → 指导保护 → 监督保护 → 强制保护 → 专控保护（破坏后果递进：公民权益→社会秩序公共利益→国家安全）'],
+  ['等保实施 6 内容','安全定级→基本安全要求分析→系统特定安全要求分析→风险评估→改进和选择安全措施→实施安全保护'],
+  ['访问控制 4 机制','DAC 自主、Role-BAC 基于角色、Rule-BAC 基于规则、MAC 强制'],
+  ['应急响应计划 5 内容','制定策略→建立紧急联系渠道→制定应急流程→应急演练→报告和记录']
+ ]]
+];
+
+/* ================= 背诵模式渲染 ================= */
+var bl = document.getElementById('bigList');
+BIG.forEach(function(b, bi){
+  var h = '<h3>📌 ' + b.title + '</h3>';
+  h += '<div class="casebg">' + b.bg + '</div>';
+  b.qs.forEach(function(it){
+    h += '<div class="qitem flip" onclick="this.classList.toggle(\'open\')">'
+       + '<div class="qtitle"><span class="qtag">' + it.tag + '</span>' + it.q + '</div>'
+       + '<div class="ans">' + it.a + '</div>'
+       + '<div class="hint">点本卡可遮住/显示答案自测</div></div>';
+  });
+  bl.innerHTML += h;
+});
+var ql = document.getElementById('qaList');
+QA.forEach(function(g){
+  var h = '<h3>' + g[0] + '</h3>';
+  g[1].forEach(function(pair){
+    h += '<div class="qitem flip" onclick="this.classList.toggle(\'open\')">'
+       + '<div class="qtitle">Q：' + pair[0] + '</div>'
+       + '<div class="ans">' + pair[1] + '</div></div>';
+  });
+  ql.innerHTML += h;
+});
+
+/* ================= 测试模式 ================= */
+var FLAT = [];
+BIG.forEach(function(b, bi){
+  b.qs.forEach(function(it, qi){ FLAT.push({id:'b'+bi+'q'+qi, src:b.title.split(' ')[0], tag:it.tag, q:it.q, a:it.a}); });
+});
+QA.forEach(function(g, gi){
+  g[1].forEach(function(pair, pi){ FLAT.push({id:'q'+gi+'-'+pi, src:g[0].split(' ').slice(0,2).join(' '), tag:'默写', q:pair[0], a:pair[1]}); });
+});
+
+function getWrong(){ try{return JSON.parse(localStorage.getItem('yc_wrong')||'[]')}catch(e){return[]} }
+function setWrong(w){ try{localStorage.setItem('yc_wrong',JSON.stringify(w))}catch(e){} refreshWrongCnt(); }
+function refreshWrongCnt(){ var el=document.getElementById('wrongCnt'); var n=getWrong().length; el.textContent = n? ('错题本 '+n+' 题') : '暂无错题记录'; }
+refreshWrongCnt();
+
+var curList = [], curIdx = 0, rightCnt = 0;
+
+function setMode(m){
+  document.getElementById('readMode').classList.toggle('hidden', m!=='read');
+  document.getElementById('testMode').classList.toggle('hidden', m!=='test');
+  document.getElementById('mRead').classList.toggle('on', m==='read');
+  document.getElementById('mTest').classList.toggle('on', m==='test');
+}
+
+function shuffle(a){ for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t} return a }
+
+function genQuiz(kind){
+  var list = [];
+  if(kind==='mix'){
+    var bigqs = shuffle(FLAT.filter(function(x){return x.id[0]==='b'})).slice(0,3);
+    var qas   = shuffle(FLAT.filter(function(x){return x.id[0]==='q'})).slice(0,5);
+    list = shuffle(bigqs.concat(qas));
+  }else if(kind==='big'){
+    var bi = Math.floor(Math.random()*BIG.length);
+    list = FLAT.filter(function(x){return x.id.indexOf('b'+bi+'q')===0});
+    document.getElementById('quizList').innerHTML =
+      '<div class="sec"><h2>'+BIG[bi].title+'</h2><div class="casebg">'+BIG[bi].bg+'</div></div>';
+  }else{
+    var w = getWrong();
+    if(!w.length){ alert('还没有错题记录，先做一套题吧'); return }
+    list = FLAT.filter(function(x){return w.indexOf(x.id)>=0});
+    if(!list.length){ alert('错题已清空，请先生成新题'); return }
+  }
+  if(kind!=='big') document.getElementById('quizList').innerHTML='';
+  curList = list; curIdx = 0; rightCnt = 0;
+  document.getElementById('scoreBox').classList.remove('hidden');
+  document.getElementById('quizDone').innerHTML='';
+  renderItem();
+}
+
+function renderItem(){
+  var total = curList.length;
+  document.getElementById('scoreTxt').innerHTML =
+    '第 <b>'+(curIdx+1)+'</b> / '+total+' 题 · 已答对 <b style="color:#35a854">'+rightCnt+'</b> 题';
+  document.getElementById('progBar').style.width = (curIdx/total*100)+'%';
+  var it = curList[curIdx];
+  var div = document.createElement('div');
+  div.className='sec';
+  div.innerHTML =
+    '<div class="qtitle"><span class="qtag">'+it.src+'</span><span class="qtag">'+it.tag+'</span>'+it.q+'</div>'
+    +'<div class="row"><button class="btn" id="showA">显示答案</button></div>'
+    +'<div class="ans hidden" id="ansBox">'+it.a+'</div>'
+    +'<div class="markline hidden" id="markBox">自评：'
+    +'<button class="btn ok" id="mkR">✔ 我答对了</button>'
+    +'<button class="btn warn" id="mkW">✘ 没答出来</button></div>';
+  document.getElementById('quizList').appendChild(div);
+  div.scrollIntoView({behavior:'smooth',block:'start'});
+  div.querySelector('#showA').onclick=function(){
+    div.querySelector('#ansBox').classList.remove('hidden');
+    div.querySelector('#markBox').classList.remove('hidden');
+    this.classList.add('hidden');
+  };
+  div.querySelector('#mkR').onclick=function(){ mark(it, div, true) };
+  div.querySelector('#mkW').onclick=function(){ mark(it, div, false) };
+}
+
+function mark(it, div, ok){
+  if(ok){ rightCnt++; setWrong(getWrong().filter(function(x){return x!==it.id})) }
+  else { var w=getWrong(); if(w.indexOf(it.id)<0){w.push(it.id); setWrong(w)} }
+  var s=document.createElement('span');
+  s.className='stamp '+(ok?'r':'w'); s.textContent = ok?'✔ 已记对':'✘ 已进错题本';
+  div.querySelector('#markBox').innerHTML=''; div.querySelector('#markBox').appendChild(s);
+  curIdx++;
+  if(curIdx < curList.length){ renderItem() }
+  else{
+    document.getElementById('progBar').style.width='100%';
+    var total=curList.length, pct=Math.round(rightCnt/total*100);
+    document.getElementById('scoreTxt').innerHTML =
+      '本套完成：'+total+' 题 · 答对 <b style="color:#35a854">'+rightCnt+'</b> · 正确率 <b>'+pct+'%</b>'
+      +(getWrong().length? ' · 错题本现存 '+getWrong().length+' 题':'');
+    document.getElementById('quizDone').innerHTML =
+      '<div class="sec" style="text-align:center"><b style="font-size:17px;color:#1f4e79">'
+      +(pct>=80?'🎉 掌握不错！保持间隔重复':pct>=60?'💪 及格线上，错题本再刷一轮':'📖 正确率偏低，回背诵模式再过一遍')
+      +'</b><div class="row" style="justify-content:center;margin-top:10px">'
+      +'<button class="btn" onclick="genQuiz(\'mix\')">再来一套速测</button>'
+      +(getWrong().length?'<button class="btn warn" onclick="genQuiz(\'wrong\')">刷错题本</button>':'')
+      +'</div></div>';
+    window.scrollTo({top:document.getElementById('scoreBox').offsetTop-80,behavior:'smooth'});
+  }
+}
+</script>
+</body>
+</html>
