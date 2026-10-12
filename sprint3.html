@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>冲刺 ③实践篇 · 考前必背 10 页 · 系规备考专区</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #f2f3f7; color: #222; }
+.topbar { position: sticky; top: 0; z-index: 100; background: #1f4e79; color: #fff; padding: 10px 14px; display: flex; align-items: center; gap: 10px; font-size: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+.topbar a { color: #cfe2f5; text-decoration: none; white-space: nowrap; }
+.topbar a.cur { color: #fff; font-weight: 700; }
+.topbar .sp { flex: 1; }
+.topbar a.dl { background: #e6a23c; color: #fff; border-radius: 6px; padding: 4px 10px; font-size: 13px; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+header { background: linear-gradient(135deg, #1f4e79, #2e74b5); color: #fff; border-radius: 14px; padding: 22px 24px; margin-bottom: 16px; text-align: center; }
+header .tag { display: inline-block; background: #e6a23c; border-radius: 20px; padding: 3px 14px; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+header h1 { font-size: 21px; }
+header .sub { font-size: 13.5px; opacity: .92; margin-top: 6px; }
+.toc { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.07); padding: 14px 16px; margin-bottom: 18px; }
+.toc .t { font-size: 13px; color: #888; margin-bottom: 8px; }
+.toc a { display: inline-block; background: #eef3fa; color: #1f4e79; border-radius: 8px; padding: 5px 12px; margin: 3px 4px 3px 0; font-size: 13.5px; text-decoration: none; }
+.content { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.07); padding: 22px 20px; font-size: 15.5px; line-height: 1.95; }
+h2.chapter { background: linear-gradient(90deg, #1f4e79, #2e74b5); color: #fff; border-radius: 8px; padding: 9px 14px; font-size: 17.5px; margin: 26px 0 12px; }
+h2.chapter:first-child { margin-top: 0; }
+h3.sec1 { color: #1f4e79; font-size: 16.5px; border-left: 4px solid #2e74b5; padding-left: 10px; margin: 20px 0 8px; }
+h4.sec2 { color: #2e74b5; font-size: 15.5px; margin: 14px 0 6px; }
+p.n1 { font-weight: 700; color: #1f4e79; margin: 12px 0 4px; }
+p.sub { padding-left: 1.2em; margin: 3px 0; }
+p.bul { padding-left: 1.2em; margin: 3px 0; color: #333; }
+p.txt { margin: 6px 0; }
+.kj { background: #fff3d6; color: #b25f00; font-weight: 700; border-radius: 5px; padding: 1px 6px; }
+.qa { border: 1px solid #e3e9f2; border-left: 4px solid #2e74b5; border-radius: 8px; padding: 10px 14px; margin: 12px 0; background: #fbfcfe; }
+.qa .q { font-weight: 700; color: #1f4e79; }
+.qa .a { margin-top: 5px; color: #333; }
+p.a.solo { margin: 8px 0; padding-left: 1.2em; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 14px; }
+th { background: #1f4e79; color: #fff; padding: 7px 8px; text-align: left; }
+td { border: 1px solid #dde3ec; padding: 6px 8px; }
+tr:nth-child(even) td { background: #f5f8fc; }
+.foot { text-align: center; font-size: 12px; color: #aaa; margin-top: 24px; line-height: 1.8; }
+</style>
+</head>
+<body>
+<div id="gate" style="position:fixed;inset:0;background:linear-gradient(135deg,#1f4e79,#2e74b5);z-index:99999;display:flex;align-items:center;justify-content:center;font-family:'PingFang SC','Microsoft YaHei',sans-serif">
+  <div style="background:#fff;border-radius:14px;padding:30px 34px;text-align:center;max-width:320px;box-shadow:0 8px 30px rgba(0,0,0,.25)">
+    <div style="font-size:30px">🔒</div>
+    <div style="font-size:18px;font-weight:600;margin:6px 0">系规备考专区</div>
+    <div style="font-size:13px;color:#888;margin-bottom:14px">请输入访问密码</div>
+    <input id="gatepw" type="password" placeholder="访问密码" autocomplete="off" style="border:1px solid #d5dae3;border-radius:8px;padding:10px;width:100%;font-size:15px;outline:none;box-sizing:border-box">
+    <button onclick="gateTry()" style="margin-top:12px;background:#1f4e79;color:#fff;border:0;border-radius:8px;padding:10px 30px;font-size:15px;cursor:pointer;width:100%">进 入</button>
+    <div id="gatemsg" style="color:#c0392b;font-size:13px;margin-top:8px"></div>
+  </div>
+</div>
+<script>
+var GATE_HASH = 2671889770;
+function gateHash(s){var h=5381;for(var i=0;i<s.length;i++){h=(h*33+s.charCodeAt(i))>>>0}return h}
+function gateTry(){if(gateHash(document.getElementById('gatepw').value)===GATE_HASH){document.getElementById('gate').remove();try{sessionStorage.setItem('gate_ok','1')}catch(e){}}else{document.getElementById('gatemsg').textContent='密码不对，再试一次'}}
+try{if(sessionStorage.getItem('gate_ok')==='1'){document.getElementById('gate').remove()}}catch(e){}
+document.getElementById('gatepw').addEventListener('keydown',function(e){if(e.key==='Enter')gateTry()});
+</script>
+
+<div class="topbar"><a href="index.html">🏠 首页</a><a href="sprint1.html">冲刺①</a><a href="sprint2.html">冲刺②</a><a href="sprint3.html" class="cur">冲刺③</a><span class="sp"></span><a class="dl" href="sprint3.pdf">⬇ 原始 PDF</a></div>
+<div class="wrap">
+  <header>
+    <div class="tag">冲刺 ③</div>
+    <h1>实践篇 · 考前必背 10 页</h1>
+    <div class="sub">智慧城市 / 智慧园区等实践考点速记，带口诀</div>
+  </header>
+  
+  <div class="content">
+<p class="n1">1、智慧城市共性基础类能力要素包括：数字战略、全周期管理、ICT 资源、数据、技术服务、信息安全。</p>
+<p class="n1">2、智慧城市的发展关注焦点：城市治理、惠民服务、生态宜居、产业发展、区域协同<span class="kj">【口诀：市民生产区】</span></p>
+<p class="n1">3、智慧城市的发展规划要点：</p>
+<p class="sub">（1）承接城市战略；</p>
+<p class="sub">（2）确立规划原则；</p>
+<p class="sub">（3）明确目标愿景；</p>
+<p class="sub">（4）业务与技术融合规划；</p>
+<p class="sub">（5）数字基础设施规划；</p>
+<p class="sub">（6）组织与保障体系规划。</p>
+<p class="n1">4、智慧城市发展规划可以参考的基本原则：<span class="kj">【口诀：元芳能择人】</span></p>
+<p class="sub">（1）以人为本，增强用户体验；</p>
+<p class="sub">（2）技术赋能，提升业务效率；</p>
+<p class="sub">（3）规则重构，优化资源配置；</p>
+<p class="sub">（4）多元创新，推进全局性转变；</p>
+<p class="sub">（5）多方共建，提升城市竞争力。</p>
+<p class="n1">5、智慧城市发展规划的基本要求：</p>
+<p class="sub">（1）明确各阶段的主要任务、建设内容及建设成果；</p>
+<p class="sub">（2）具有明确性、可衡量性、可达成性，并有明确时限，同时应与城市自身的数字化发展设想和其他城市规划目标相匹配；</p>
+<p class="sub">（3）总体目标以近期为准，应明确规划期完成后在政务、经济、社会、文化、生态文明等领域所取得的宏观成效，具体目标应就以上方面分领域描述应取得的具体成效；</p>
+<p class="sub">（4）规划目标应展望中远期达成成效和愿景，较总体目标更为宏观；</p>
+<p class="sub">（5）目标设定应充分衔接城市战略及智慧城市指导思想等内容；</p>
+<p class="sub">（6）建立指标体系，实现对智慧城市建设效果的量化。</p>
+<p class="n1">6、智慧城市关注的业务与技术融合内容：数字政府、数字社会、数字经济。</p>
+<p class="n1">7、数字政府规划内容：一网协同、一网统管、一网通办。</p>
+<p class="n1">8、智慧城市组织与保障体系规划的内容：组织体系、市场化生态、人才队伍、信息安全。<span class="kj">【口诀：主场人权】</span></p>
+<p class="n1">9、智慧城市组织体系规划步骤：</p>
+<p class="sub">（1）需要识别所有参与相关工作的主体，并从中找出主要组织单位，并基于此定义所有参与主体的角色与职责；</p>
+<p class="sub">（2）定义主导组织单位的相关责任分工，需要包括领导与协调、业务与项目管理、技术创新与决策、数据资源与安全等；</p>
+<p class="sub">（3）明确相关职责的承担部门或主体，并确保相关职责能够到人，必要时，技术创新与决策部分可以使用社会化力量进行承担；</p>
+<p class="sub">（4）明确主体组织单位外的其他组织单位角色与职责，这部分尽量能够到人，至少要与相关组织的内部架构进行匹配和融合；</p>
+<p class="sub">（5）所有单位的角色职责融合一体化。</p>
+<p class="n1">10、智慧城市组织体系规划注意事项：</p>
+<p class="sub">（1）不要忽略主体组织外的其他组织与群体；</p>
+<p class="sub">（2）避免相关职责没有得到有效宣贯；</p>
+<p class="sub">（3）所有责任体系要明确，确保基于组织架构等能够直接或间接实现所有任务或活动责任到人；</p>
+<p class="sub">（4）各类角色职责之间不要缺乏一体化融合。</p>
+<p class="n1">11、智慧城市市场化生态的注意事项：</p>
+<p class="sub">（1）把市场化生态作为一项工作内容考虑；</p>
+<p class="sub">（2）充分挖掘智慧城市发展与建设过程中，能够衍生的经济新模式、市场新业态；</p>
+<p class="sub">（3）考虑城市信息技术及其服务产业的发展基础，给出利用智慧城市建设促进相关产业发展的方法；</p>
+<p class="sub">（4）尽量确保相关市场化生态覆盖模式革新、技术创新和管理创新；</p>
+<p class="sub">（5）明确城市基于市场化生态的创新机制、措施和模式等。</p>
+<p class="n1">12、智慧城市人才保障体系规划的注意事项：</p>
+<p class="sub">（1）确保智慧城市主体组织单位相关人才体系与人才容量的有效性；</p>
+<p class="sub">（2）特定业务主体单位，相关业务人员的数字能力；</p>
+<p class="sub">（3）领军、标杆等创新人才的打造，以及其带头和影响力建设；</p>
+<p class="sub">（4）信息数字技术人才对智慧城市业务的认知与融合创新能力；</p>
+<p class="sub">（5）城市社会化智慧城市人才建设与发展情况。</p>
+<p class="n1">13、智慧城市信息安全保障措施规划的注意事项：</p>
+<p class="sub">（1）全面落实信息安全责任制，全力保障任何安全风险和安全事件都有对应的人负责；</p>
+<p class="sub">（2）系统分析信息安全体系的完整性和有效性，保障管理体系的管理活动得到合理安全；</p>
+<p class="sub">（3）在重视网络安全、数据安全和系统安全的基础上，需要把终端安全的重要性提高到新的高度；</p>
+<p class="sub">（4）确保安全工具的有效性；</p>
+<p class="sub">（5）强化网络行为审计和运维审计等，保障各类攻防的有效性。</p>
+<p class="n1">14、智慧城市总体架构的内容：业务架构、数据架构、应用架构、技术架构、安全体系、标准体系、产业体系<span class="kj">【口诀：产业用数全标记】</span></p>
+<p class="n1">15、城市总体数据架构主要包括：城市总体数据模型、数据分布、数据服务。</p>
+<p class="n1">16、智慧园区投资模式主要有：政府投资类、平台公司类、政府和社会资本合作共建。</p>
+<p class="n1">17、智慧园区的发展关注焦点：招引建设、经济监测、园区运行、公共安全、产城融合、绿色园区、关键评价指标<span class="kj">【口诀：招经园安/融绿评】</span></p>
+<p class="n1">18、智慧园区评价指标维度：产城融合、组织战略、运营管理、产业服务、社群服务、绿色环保、安全应急、运行管理、信息与应用。</p>
+<p class="n1">19、智慧园区的发展规划要点：</p>
+<p class="sub">（1）数智化转型提升；</p>
+<p class="sub">（2）建设发展可持续；</p>
+<p class="sub">（3）技术与制度创新；</p>
+<p class="sub">（4）运维与运营体系。</p>
+<p class="n1">20、智慧园区数智化转型提升的方面：</p>
+<p class="sub">（1）基础设施集约化；</p>
+<p class="sub">（2）运营管理精细化；</p>
+<p class="sub">（3）园区服务平台化；</p>
+<p class="sub">（4）产业发展数字化。</p>
+<p class="n1">21、智慧园区的总体参考架构：应用架构、数据架构、交互体系。</p>
+<p class="n1">22、智慧园区应用架构包含：</p>
+<p class="sub">（1）综合安防；（2）便捷通行；（3）设施管理；（4）资产管理；（5）能耗管理；（6）环境管理；（7）智能运营中心。</p>
+<p class="n1">23、数字乡村发展的关注焦点：</p>
+<p class="sub">（1）数字经济；（2）数字服务；（3）数字治理；（4）数字生态；（5）文化资源数字化。</p>
+<p class="n1">24、数字乡村发展规划的要点：</p>
+<p class="sub">（1）加强乡村数字基础建设；</p>
+<p class="sub">（2）推动数字治理体系建设；</p>
+<p class="sub">（3）加快城乡教育一体化建设；</p>
+<p class="sub">（4）坚持数字经济发展为导向；</p>
+<p class="sub">（5）关键技术与数字乡村应用的深度融合。</p>
+<p class="n1">25、乡村数字经济内容包含：</p>
+<p class="sub">（1）农业数字化（2）乡村电子商务（3）乡村普惠金融（4）乡村新业态.</p>
+<p class="n1">26、乡村数字服务内容包含：</p>
+<p class="sub">（1）“互联网+政务”（2）“互联网+医疗”（3）“互联网+养老”</p>
+<p class="n1">27、加快城乡教育一体化建设的主要内容：</p>
+<p class="sub">（1）推进乡村教育信息化；</p>
+<p class="sub">（2）搭建乡村数字资源的共享平台；</p>
+<p class="sub">（3）培育新型数字农民为主的人才。</p>
+<p class="n1">28、坚持数字经济发展为导向的主要内容：</p>
+<p class="sub">（1）畅通资源“进程下乡”渠道；</p>
+<p class="sub">（2）创新科技成果转化下乡机制；</p>
+<p class="sub">（3）积极发展农村数字经济新业态。</p>
+<p class="n1">29、关键技术与数字乡村应用深度融合的主要内容：<span class="kj">【口诀：全新感应】</span></p>
+<p class="sub">（1）新型基础设施技术；</p>
+<p class="sub">（2）数字乡村信息感知技术；</p>
+<p class="sub">（3）数字乡村智能化应用技术；</p>
+<p class="sub">（4）数字乡村数据安全共享与传输技术。</p>
+<p class="n1">30、信息系统架构设计包含：业务架构、总体架构、数据架构、运营与服务架构。</p>
+<p class="n1">31、数字乡村信息系统总体参考架构的组成：</p>
+<p class="sub">（1）业务场景；（2）技术支撑；（3）数据能力；（4）基础设施；（5）运营管理；（6）标准与安全。</p>
+<p class="n1">32、数字乡村运营与服务架构组成部分：运营指导中心、运营主体、运营对象、运营服务保障、运营安全保障。</p>
+<p class="n1">33、转型驱动力包括：时代演进驱动力、技术资源驱动力、政策金融驱动力、升级发展驱动力。</p>
+<p class="n1">34、时代驱动企业开展数字化转型的关键动力：消费重塑、产业调整、劳动供给、绿色低碳、发展格局。</p>
+<p class="n1">35、企业数字化转型的关注焦点：</p>
+<p class="sub">（1）客户中心；（2）数智赋能；（3）敏捷组织；（4）新型文化。</p>
+<p class="n1">36、企业数字化转型的发展规划要点：</p>
+<p class="sub">（1）管控规划活动；（2）定义数字化蓝图；（3）明确数字化发展需求；（4）制定解决方案与路径计划；（5）确保保障措施有效性；（6）规划建设数字人才。</p>
+<p class="n1">37、数字化转型规划活动管控的方面：</p>
+<p class="sub">（1）组织；（2）宣教；（3）目标；（4）过程；（5）成果。</p>
+<p class="n1">38、定义数字化蓝图对企业的要求：</p>
+<p class="sub">（1）目标长远；（2）战略高度；（3）拥抱数字；（4）顺势而为。</p>
+<p class="n1">39、企业数字化转型规划诊断评估的步骤：</p>
+<p class="sub">（1）基于企业业务特征、行业特点和职能设施等，分析并确立企业所需的能力域、能力子域，乃至能力分项；</p>
+<p class="sub">（2）定义各能力领域的成熟度标尺；</p>
+<p class="sub">（3）结合企业的发展导向、行业特点和标准与实践等，明确各能力领域的权重体系；</p>
+<p class="sub">（4）编制诊断评估的调研表单、调研问题、调研计划等，根据计划实施调研活动，并对企业各能力域进行量化评价；</p>
+<p class="sub">（5）针对重点领域，召开研讨活动；</p>
+<p class="sub">（6）对企业各领域能力成熟度进行分析，在明确长短板的基础上，洞察形成这种能力分布的深层次原因；</p>
+<p class="sub">（7）逐项分析企业所处整体等级和高一等级不满足成熟度标尺细化要求的情况和程度。</p>
+<p class="n1">40、数字人才建设的关键控制点：</p>
+<p class="sub">（1）部门壁垒；（2）个性化需求；（3）持续推进<span class="kj">【口诀：推个门】</span></p>
+<p class="n1">41、数字化转型业务分析框架图的层次：</p>
+<p class="sub">（1）能力主线业务架构；（2）全域业务架构；（3）企业级价值链<span class="kj">【口诀：全能练】</span></p>
+<p class="n1">42、智能制造的发展关注焦点：</p>
+<p class="sub">（1）智能制造人才培养；（2）数字化研发设计；（3）生产过程智能化；（4）设备数字化管理；（5）智能物流；（6）智慧安全与环保；（7）智慧能源管理<span class="kj">【口诀：数字人生无智慧】</span></p>
+<p class="n1">43、智能制造规划活动的要点：</p>
+<p class="sub">（1）诊断评估；（2）均衡部署；（3）突破重点；（4）人才保障<span class="kj">【口诀：不点真人】</span></p>
+<p class="n1">44、智能制造规划管理的要点：</p>
+<p class="sub">（1）多元参与；（2）知识传递；（3）目标控制；（4）实践借鉴<span class="kj">【口诀：多地标间】</span></p>
+<p class="n1">45、智能制造生命周期的活动：</p>
+<p class="sub">（1）设计；（2）生产；（3）物流；（4）销售；（5）服务<span class="kj">【口诀：计生留校服】</span></p>
+<p class="n1">46、智能制造的智能特征：</p>
+<p class="sub">（1）资源要素；（2）互联互通；（3）融合共享；（4）系统集成；（5）新兴业态<span class="kj">【口诀：心系同工资】</span></p>
+<p class="n1">47、智能制造的实施路径：</p>
+<p class="sub">（1）第一阶段的由缺到全；（2）第二阶段的由全到通；（3）第三阶段的由通到智<span class="kj">【口诀：缺到全，全到通，通到智】</span></p>
+<p class="n1">48、新型消费系统的发展关注焦点：</p>
+<p class="sub">（1）新零售业态；（2）“互联网+”服务；（3）共享型消费；（4）兴趣消费<span class="kj">【口诀：新户共消】</span></p>
+<p class="n1">49、新型消费系统的规划要点：</p>
+<p class="sub">（1）需求分析；（2）用户体验；3 精准营销；（4）效益分析；（5）关键要素<span class="kj">【口诀：需用营销书】</span></p>
+<p class="n1">50、新型消费系统规划需求分析的注意事项：<span class="kj">【口诀：钱因细分贵适用】</span></p>
+<p class="sub">（1）需要具备一定的前瞻性，充分预测用户的需求发展；</p>
+<p class="sub">（2）强调对隐性需求的分析；</p>
+<p class="sub">（3）消费场景尽可能细化；</p>
+<p class="sub">（4）充分考虑地域发展和文化的差异；</p>
+<p class="sub">（5）强化对消费群体的归集；</p>
+<p class="sub">（6）预留充足的需求变革适应能力；</p>
+<p class="sub">（7）考虑消费者对消费入口工具的使用。</p>
+<p class="n1">51、新型消费系统规划用户体验的注意事项：</p>
+<p class="sub">（1）建立用户体验反馈群体或虚拟组织，从使用中获得体验反馈；</p>
+<p class="sub">（2）策划用户体验的发布策略，逐步引导用户的体验；</p>
+<p class="sub">（3）关注人体工程相关的知识应用，保障体验的顺畅性；</p>
+<p class="sub">（4）充分考虑各类终端的特征特点，与体验融为一体；</p>
+<p class="sub">（5）强化视觉优化，确保静动态页面的美感及一致性。</p>
+<p class="n1">52、新型消费系统规划精准营销的注意事项：</p>
+<p class="sub">（1）注重联合营销接口的支撑能力，便于后期与其他平台的联合拓展；</p>
+<p class="sub">（2）在营销相关模块中，部署流量计量等功能，乃至流量计费模型；</p>
+<p class="sub">（3）对国家相关法律法规、标准的遵循，包括互联网广告、程序化营销；</p>
+<p class="sub">（4）关注细节数据沉淀以及数据关联的标注；</p>
+<p class="n1">53、新型消费系统规划成功的关键要素：</p>
+<p class="sub">（1）获客导流；（2）促活锁客；3 变现留客；（4）精准运营。</p>
+<p class="n1">54、新型消费场景下系统架构设计需要考虑的方面：</p>
+<p class="sub">（1）处理大量用户请求能力；（2）大量数据处理分析能力；（3）数据安全和隐私保护能力；（4）实时响应和交互能力；（5）多终端支持能力<span class="kj">【口诀：球叔按时钟】</span></p>
+<p class="n1">55、保障新型消费系统安全和稳定性的主要措施：</p>
+<p class="sub">（1）数据加密和身份认证；（2）防火墙和入侵检测系统；（3）安全培训和意识教育；（4）系统备份和容灾；（5）监控和日志记录。</p>
+<p class="n1">56、新型消费系统可扩展性和灵活设计的考虑因素：</p>
+<p class="sub">（1）模块化设计；（2）基于云计算的架构；（3）自动化运维和部署；（4）开放式接口和标准化协议；（5）统一数据管理和分析平台。</p>
+<p class="n1">57、中国特色社会主义法律体系，是以宪法为统帅，以法律为主干，以行政法规、地方性法规为重要组成部分，</p>
+<p class="n1">58、我国法律体系中的法律法规包括法律，法律解释，行政法规，地方性法规、自治条例和单行条例以及规章等。</p>
+<p class="n1">59、根据《中华人民共和国标准化法》国家标准分为强制性标准、推荐性标准。行业标准、地方标准是推荐性标准。强制性标准必须执行。国家鼓励采用推荐性标准。</p>
+<p class="n1">60、强制性国家标准的代号为“GB”，推荐性国家标准的代号为“GB/T”，国家标准样品的代号为“GSB”，指导性技术文件的代号为“GB/Z”。</p>
+<p class="n1">61、国家标准的编号由国家标准的代号、国家标准发布的顺序号和国家标准发布的年份号构成。国家标准样品的编号由国家标准样品的代号、分类目录号、发布顺序号、复制批次号和发布年份号构成。</p>
+<p class="n1">62、标准名称由三种元素组成：</p>
+<p class="sub">（1）引导元素（可选）：表示文件所属的领域；（2）主体元素（必备）：表示文件所涉及的标准化对象；（3）补充元素（可选）：表示标准化对象的特殊方面。</p>
+<p class="n1">63、ISO 标准为例，该标准每 5 年复审一次。我国在《国家标准管理办法》中规定国家标准实施 5 年内需要进行复审，即国家标准有效期一般为 5 年。企业标准应定期复审，复审周期一般不超过 3 年。</p>
+<p class="n1">64、ITIL 的 2011 年版本使用 5 个主要书面指导文件，分别论述了 IT 服务的服务战略、服务设计、服务转换、服务运营和服务的持续改进。涉及 4 个职能：服务台、运营管理、应用管理、技术管理；26 个流程：事件管理、事态管理、请求履行、问题管理、资产与配置管理、变更管理、发布与部署管理、服务级别管理、连续性管理、可用性管理、容量管理、IT 服务财务管理、信息安全管理、服务报告、业务关系管理、供应商管理、知识管理、服务目录管理、战略制定、需求管理、服务组合管理、变更评估、设计协作管理、服务验证与测试、转换规划与支持、访问管理。</p>
+<p class="n1">65、IT 服务 PPTR：人员（People）、过程（Process）、技术（Technology）、资源（Resource）。</p>
+<p class="n1">66、IT 服务生命周期 PIOIS：规划设计（Planning&amp;Design）、部署实施（Implementing）、服务运营（Operation）、持续改进（Improvement）和监督管理（Supervision）<span class="kj">【口诀：技师服务改监督】</span></p>
+<p class="n1">67、ITSS5.0 的主要内容包括通用标准、保障标准、基础服务标准、技术创新服务标准、数字化转型服务标准、业务融合标准。</p>
+<p class="n1">68、服务管控类标准分为：治理、服务管理和监理三个子域。</p>
+<p class="n1">69、技术创新服务标准主要包括：智能化服务、数据服务、数字内容处理服务、区块链服务。</p>
+  </div>
+  <div class="foot">原文标题：2026 年系规实践篇考前必背 10 页<br>原始 PDF 密码：zhuoyue2026 ｜ 距 10 月 25 日考试越近，越要主攻这三份 · 加油 💪</div>
+</div>
+</body>
+</html>
