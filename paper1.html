@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>范文 ① 论云资源规划 · 系规备考专区</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #f2f3f7; color: #222; }
+.topbar { position: sticky; top: 0; z-index: 100; background: #1f4e79; color: #fff; padding: 10px 14px; display: flex; align-items: center; gap: 10px; font-size: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.2); flex-wrap: wrap; }
+.topbar a { color: #cfe2f5; text-decoration: none; white-space: nowrap; }
+.topbar a.cur { color: #fff; font-weight: 700; }
+.topbar .sp { flex: 1; }
+.topbar a.dl { background: #e6a23c; color: #fff; border-radius: 6px; padding: 4px 10px; font-size: 13px; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+header { background: linear-gradient(135deg, #1f4e79, #2e74b5); color: #fff; border-radius: 14px; padding: 22px 24px; margin-bottom: 16px; text-align: center; }
+header .tag { display: inline-block; background: #7c5cb0; border-radius: 20px; padding: 3px 14px; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+header h1 { font-size: 21px; }
+header .sub { font-size: 13.5px; opacity: .92; margin-top: 6px; }
+.content { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.07); padding: 26px 22px; font-size: 15.5px; line-height: 2.0; }
+h2.sec { color: #1f4e79; font-size: 17px; border-left: 4px solid #7c5cb0; padding-left: 10px; margin: 24px 0 10px; }
+p.para { text-indent: 2em; margin: 10px 0; text-align: justify; }
+.foot { text-align: center; font-size: 12px; color: #aaa; margin-top: 24px; line-height: 1.8; }
+.memo { background: #faf6ff; border: 1px solid #e4d9f5; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; font-size: 14px; line-height: 1.9; }
+.memo b { color: #7c5cb0; }
+.memo a { color: #1f4e79; }
+</style>
+</head>
+<body>
+<div id="gate" style="position:fixed;inset:0;background:linear-gradient(135deg,#1f4e79,#2e74b5);z-index:99999;display:flex;align-items:center;justify-content:center;font-family:'PingFang SC','Microsoft YaHei',sans-serif">
+  <div style="background:#fff;border-radius:14px;padding:30px 34px;text-align:center;max-width:320px;box-shadow:0 8px 30px rgba(0,0,0,.25)">
+    <div style="font-size:30px">🔒</div>
+    <div style="font-size:18px;font-weight:600;margin:6px 0">系规备考专区</div>
+    <div style="font-size:13px;color:#888;margin-bottom:14px">请输入访问密码</div>
+    <input id="gatepw" type="password" placeholder="访问密码" autocomplete="off" style="border:1px solid #d5dae3;border-radius:8px;padding:10px;width:100%;font-size:15px;outline:none;box-sizing:border-box">
+    <button onclick="gateTry()" style="margin-top:12px;background:#1f4e79;color:#fff;border:0;border-radius:8px;padding:10px 30px;font-size:15px;cursor:pointer;width:100%">进 入</button>
+    <div id="gatemsg" style="color:#c0392b;font-size:13px;margin-top:8px"></div>
+  </div>
+</div>
+<script>
+var GATE_HASH = 2671889770;
+function gateHash(s){var h=5381;for(var i=0;i<s.length;i++){h=(h*33+s.charCodeAt(i))>>>0}return h}
+function gateTry(){if(gateHash(document.getElementById('gatepw').value)===GATE_HASH){document.getElementById('gate').remove();try{sessionStorage.setItem('gate_ok','1')}catch(e){}}else{document.getElementById('gatemsg').textContent='密码不对，再试一次'}}
+try{if(sessionStorage.getItem('gate_ok')==='1'){document.getElementById('gate').remove()}}catch(e){}
+document.getElementById('gatepw').addEventListener('keydown',function(e){if(e.key==='Enter')gateTry()});
+</script>
+
+<div class="topbar"><a href="index.html">🏠 首页</a><a href="papermemo.html">🧠 记忆要点</a><a href="paper1.html" class="cur">范文①</a><a href="paper2.html">范文②</a><a href="paper3.html">范文③</a><span class="sp"></span><a class="dl" href="paper1.pdf">⬇ 原始 PDF</a></div>
+<div class="wrap">
+  <header>
+    <div class="tag">范文 ①</div>
+    <h1>论云资源规划</h1>
+    <div class="sub">三甲医院云一体化项目 · IaaS/PaaS/SaaS/FaaS · 计算规划七步 · 存储规划九步</div>
+  </header>
+  <div class="memo">🧠 背骨架比背全文高效：<a href="papermemo.html">先看这篇的记忆要点</a>，再回来读范文对应段落。</div>
+  <div class="content">
+<p class="para">某市三甲中心医院是当地医疗救治与教学科研核心机构，开放床位 1800张，日均门急诊量超 6000人次。此前医院信息化系统由多厂商分期建设，HIS、EMR、LIS、PACS 等系统各自独立，数据标准不统一，信息孤岛问题突出，临床医护需跨系统重复录入数据，诊疗效率受限，已无法支撑智慧医院建设与集约化云资源管理要求。为此医院于 2024年9月正式启动医疗系统云一体化建设项目，项目总投资 1260万元，建设周期 14个月。项目以打通全院数据链路、提升临床诊疗效率、满足医疗行业合规评级为核心目标，建设内容涵盖全院统一集成平台、新版核心业务系统、临床决策支持、智慧结算等 8大功能域，覆盖门诊、住院、医技、后勤全业务场景。</p>
+<p class="para">该系统基于全院云资源统筹规划设计，采用微服务架构，基于 SpringCloud技术栈开发，数据库选用国产达梦数据库，统一部署于医院私有云资源池，搭载麒麟操作系统，满足国产化安全适配与云资源弹性调度要求；搭建 ESB企业服务总线实现各系统数据标准化交互，构建全院数据中台开展统一数据治理，同步落实等保 2.0三级安全防护体系，实现云资源与安全能力的集约管控。公司采用项目型组织结构推进建设，我作为公司派驻的系统规划与管理师，担任项目总规划师，团队下设需求分析、架构设计、开发实施、测试、安全合规、现场实施 6个小组共 26人，各小组负责人直接向我汇报。我的核心职责包括牵头制定全院信息化整体规划、设计系统技术架构、管控需求变更、协调院方各科室对接、把控项目进度与质量，最终交付一体化医疗信息系统及配套管理规范，支撑医院完成行业评级工作。</p>
+<p class="para">优秀的云资源规划可以对云资源进行合理和有效的管理和分配，能够确保计算、存储、网络等资源充分发挥作用。因此，我和我的团队深刻地认识到，良好的云资源规划是项目成功的关键，在云资源规划中，我首先论述四种云计算服务模式的联系和区别，接下来描述云资源规划中计算资源规划的关键过程，最后描述云资源规划中存储资源规划的步骤，有力保证了项目成功。具体过程如下：</p>
+<h2 class="sec">一、四种云计算服务模式的联系和区别</h2>
+<p class="para">四种服务模式并非彼此替代，而是层次递进、相互支撑、抽象层次逐渐升高，具有高度的关联性。其中，IaaS 提供虚拟机、存储和网络，是底座，我们在私有云先划出生产池和灾备池，把 HIS、EMR核心库和 PACS影像纳入统一资源池；PaaS 在 IaaS上提供中间件、容器和运行时，让开发人员专注代码，互联网医院团队基于容器平台和 API网关开发预约、缴费、报告查询，不再逐台申请服务器；SaaS 利用 PaaS平台，可以降低开发难度，快速把成熟软件直接交付给普通用户，比如预约、缴费、报告查询逐步迁到容器平台后，迭代从每月 1次提到每周 1次，需求响应明显加快。FaaS 则把 SaaS系统中挂号短信、影像脱敏等动作拆成函数，按事件触发。</p>
+<p class="para">四种服务模式区别主要在服务层次、使用对象和管理边界。IaaS 面向系统管理员，我们租用 32台虚拟机、200TB对象存储承载 PACS影像，年增约 80TB，机房扩容因此推迟两年，资源成本降约 30%。PaaS面向开发人员，我们把互联网医院、移动护理拆成 6个微服务，基于容器平台部署，开发周期由 12周缩至 7周，资源利用率提升约 40%，服务器、操作系统和网络仍由云商维护。SaaS 面向普通用户，OA、HR、在线文档直接开通，覆盖全院 3000余名员工，按年付费，日常运维减少 2人。FaaS面向开发人员，用于预约挂号成功后的短信推送、医保日终对账和影像上传后的自动脱敏，高峰期每秒约 2000次调用，闲时几乎零成本。可见，IaaS控制强但管理重，PaaS 提效明显，SaaS最省心，FaaS弹性最细；核心敏感系统选私有云 IaaS，互联网弹性业务选 PaaS/FaaS，通用办公选SaaS，才能兼顾合规、成本和效率。</p>
+<h2 class="sec">二、云资源规划中计算资源规划的关键过程</h2>
+<p class="para">计算资源规划是确保企业或组织在云计算环境中有效地管理和利用计算资源的关键过程。在项目中，我作为云资源规划负责人，把计算资源规划作为核心环节，按需求分析、容量规划、云服务选择、虚拟化策略、安全性考虑、成本效益分析和持续监控维护七步推进。项目启动后，我们先花三周梳理 HIS、EMR、LIS、PACS、互联网医院、医保结算等 18个系统，通过压测和基线分析，摸清核心库峰值并发约 3000、PACS影像年增约80TB、互联网医院日挂号峰值约 1.2万次，明确 CPU、内存、存储和带宽需求。接着做容量规划，按“核心稳态、互联网弹性”原则，私有云配置 32台虚拟机、200TB对象存储，公有云预留 20%弹性资源，确保高峰可扩、闲时可缩。云服务选择上，核心诊疗库和医保结算选私有云 IaaS，互联网医院和移动护理选 PaaS容器平台，OA、HR选 SaaS，短信推送和影像脱敏选 FaaS。虚拟化方面，对 120台物理服务器做整合，采用服务器虚拟化和容器化，资源利用率由不足20%提升到约55%，机房扩容推迟两年。安全性上，核心数据加密存储、分权访问、操作审计，互联网区与私有区通过安全组和专线隔离。成本效益方面，比较自建与租用，整体资源成本降约 30%，日常运维减少 2人。上线后建立监控告警和月度容量复盘，跟踪 CPU、内存、存储使用率，发现 PACS存储增速偏快后提前扩容，避免影像调阅卡顿。通过这一过程，计算资源既满足医院业务连续性和合规要求，也实现了弹性、成本和效率的平衡。</p>
+<h2 class="sec">三、云资源规划中存储资源规划的步骤</h2>
+<p class="para">存储资源规划是一个综合性的过程，涉及对存储需求、性能要求、可用性要求、安全需求等进行分析和评估，以确定适当的存储资源配置和管理策略。 在项目中，我作为云资源规划负责人，把存储资源规划按收集需求、分析评估、技术选择、架构设计、安全规划、容量规划、性能优化、管理监控和定期评估调整九步推进。项目启动后，我带 2名架构师和院方信息科 3名骨干，用两周走访临床、影像、病案、医保等科室，收集 HIS、EMR、LIS、PACS、互联网医院等 18个系统的数据量、类型、访问模式、保留期限和性能要求，摸清核心库约2TB、电子病历年增约 5TB、PACS影像年增约80TB、日志年增约 3TB，影像调阅峰值并发约500次，病历要求保存 30年。分析评估时，用历史采样和趋势分析预测五年 PACS影像将达约400TB，核心库需低延迟、高 IOPS，影像需大容量、高吞吐，互联网区需弹性。技术选择上，核心库采用全闪 SAN保障低延迟，PACS采用分布式对象存储，备份采用对象存储并异地存放，互联网区用云盘和对象存储。架构设计采用私有云双活存储加公有云备份，热数据全闪、温数据大容量盘、冷数据对象存储分层。安全规划落实加密存储、分权访问、操作审计和每日增量、每周全量备份，并制定灾难恢复预案。容量规划按五年总可用约 600TB、预留20%余量配置。性能优化通过缓存、负载均衡和分层调阅，把 PACS调阅响应控制在 2秒内。上线后建立统一监控，容量达到 70%告警，每季度复盘一次，发现影像增速偏快便提前扩容，确保存储既安全合规又不浪费。</p>
+<p class="para">2025年2月，XX市三甲中心医院医疗系统云一体化建设项目按期通过终验，较好支撑全院 18个系统稳定运行，核心库峰值并发约 3000时响应正常，PACS影像调阅控制在 2秒内，整体资源成本降约 30%，日常运维减少 2人。回顾过程，主要有三点经验：一是先摸清业务底数再定混合云路线，核心诊疗库、PACS 和医保结算放私有云，互联网医院、预约挂号放公有云，做到核心可控、互联网弹性；二是计算与存储分步规划，按峰值和年增约 80TB预留20%余量，避免反复扩容；三是安全与成本同步考虑，等保、加密、审计和资源选型一起落地，减少后期整改。</p>
+<p class="para">项目推进中也有不足，初期对互联网医院挂号峰值估计偏低，弹性扩容触发稍晚，高峰时段出现短暂延迟。后续我通过 FaaS和容器自动扩缩容，把扩容阈值从 80%调到65%，并增加月度容量复盘，问题逐步解决。这次项目让我体会到云资源规划必须紧贴业务节奏，未来我将继续优化多云资源调度和成本分析，为医院数字化提供更稳的支撑。</p>
+  </div>
+  <div class="foot">原文标题：论云资源规划<br>原始 PDF 密码：zhuoyue2026 ｜ 距 10 月 25 日考试，论文先看骨架再看范文 💪</div>
+</div>
+</body>
+</html>
